@@ -20,7 +20,7 @@
 		<div id="inner">
 		<h1 class="head">About Us</h1>
 		<div class="head">
-			<img src="" alt="logo">
+			<img src="G.png" alt="logo">
 		</div>
 		<div class="head">
 			<h3>Why we make this web</h3>
