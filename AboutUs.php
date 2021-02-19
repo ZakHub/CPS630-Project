@@ -4,6 +4,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>GQZ TRAVELS</title>
     <link rel="stylesheet" href="Main.css">
+	<style>
+        header {
+            font-family: "DejaVu Sans Mono", sans-serif;
+        }
+        
+
+        .head{
+            text-align: center;
+        }
+    </style>
 <body>
 	<?php include('header.php'); ?>
     <div id="outer">
