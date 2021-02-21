@@ -1,6 +1,10 @@
 <!-- Module containing a common nav bar -->
+<?php
+ob_start();
+session_start();
+?>
 <nav class="nav">
-  <img src="Logo2.png" width="100" height="100"
+  <img src="Logo2.png" width="80" height="100"
     class="d-inline-block align-top" alt="logo"/>
   <a href="CPS630ProjectMain.php">Home</a>
   <a href="SignUp.html">Sign Up</a>
