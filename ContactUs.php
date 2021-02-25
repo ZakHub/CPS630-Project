@@ -9,7 +9,7 @@
 </head>
 <body>
   <div id="outer">
-    <div id="inner">
+    <div id="inner" class="floating">
       <!-- Navigation -->
       <?php include('navbar.php') ?>
       <div class="head">

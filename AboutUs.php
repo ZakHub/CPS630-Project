@@ -17,7 +17,7 @@
 </head>
 <body>
   <div id="outer">
-    <div id="inner">
+    <div id="inner" class="floating">
       <?php include('navbar.php'); ?>
       <h1 class="head">About Us</h1>
       <div class="head">
