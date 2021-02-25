@@ -10,8 +10,8 @@ session_start();
   <a href="SignUp.html">Sign Up</a>
   <a href="login.html">Log In</a>
   <a href="AboutUs.php">About Us</a>
-  <a href="ContactUs.html">Contact Us</a>
+  <a href="ContactUs.php">Contact Us</a>
   <a href="Review.html" >Reviews</a>
   <a href="ShoppingCart.html" >Shopping Cart</a>
-  <a href="TypesOfServices.html">Types of Services</a>
+  <a href="TypesOfServices.php">Types of Services</a>
 </nav>
