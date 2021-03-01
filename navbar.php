@@ -67,9 +67,9 @@ session_start();
      echo '<div class="dropdown"><button class="dropbtn">db Maintain</button>
                     <div class="dropdown-content">
                      <a href=insert.html">Insert</a>
-                     <a href="delete.html">Delete</a>
-                    <a href="update.html">Update</a>
-                    <a href="select.html">Select</a>
+                     <a href="delete.php">Delete</a>
+                    <a href="update.php">Update</a>
+                    <a href="select.php">Select</a>
                 </div>
                 </div>
                 ';
