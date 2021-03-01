@@ -7,14 +7,15 @@
     display: block;
     padding: 20px;
     text-align: left;
+}
+
+.floating {
     -webkit-box-shadow: -1px 1px 36px 14px rgba(0,0,0,0.75);
     -moz-box-shadow: -1px 1px 36px 14px rgba(0,0,0,0.75);
     box-shadow: -1px 1px 36px 14px rgba(0,0,0,0.75);
 }
 
-
-
-.nav{
+.nav {
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -22,7 +23,12 @@
     background-color: lightgoldenrodyellow;
 }
 
-a{
+* {
+    color: black;
+    font-family: helvetica;
+}
+
+a {
   color: black;
   font-family: helvetica;
   text-align: center;

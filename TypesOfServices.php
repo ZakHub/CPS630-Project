@@ -16,9 +16,6 @@
     }
     
     .service {
-      -webkit-box-shadow: -1px 1px 36px 14px rgba(0,0,0,0.75);
-      -moz-box-shadow: -1px 1px 36px 14px rgba(0,0,0,0.75);
-      box-shadow: -1px 1px 36px 14px rgba(0,0,0,0.75);
       padding: 10px;
     }
     
@@ -34,14 +31,14 @@
 </head>
 <body>
   <div id="outer">
-    <div id="inner">
+    <div id="inner" class="floating">
       <!-- Navigation -->
       <?php include('navbar.php'); ?>
 
       <h1>Types of Services</h1>
       <p>GQZ Offers two types of travel services.</p>
       <div class="service-outer">
-        <div class="service" id="service-a"
+        <div id="service-a" class="service floating"
           onclick="location.href='ServiceA.php';">
           <!--<h3><a href="ServiceA.php">Travel</a></h3>-->
           <h2>Travel</h2>
@@ -51,7 +48,7 @@
       </div>
       <br />
       <div class="service-outer">
-        <div class="service" id="service-b"
+        <div id="service-b" class="service floating"
           onclick="location.href='ServiceB.php';">
           <!--<h3><a href="ServiceB.php">Delivery</a></h3>-->
           <h2>Delivery</h2>
