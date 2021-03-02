@@ -28,8 +28,7 @@
       //console.log(target);
       var map = new google.maps.Map(target, { zoom: 12, center: {lat: 37.4, lng: -122.1}});
       
-      //if (!navigator.geolocation) {
-      if (navigator.geolocation) {
+      if (!navigator.geolocation) {
         console.warn('geolocation is not supported');
         return;
       }
@@ -96,6 +95,7 @@
   </div>
   
   <!-- map initialization script for google maps -->
-  <script async src="https://maps.googleapis.com/maps/api/js?key=<?php include('key.txt'); ?>&callback=initMap"></script>
+  <script async src="https://maps.googleapis.com/maps/api/js?key=<?php
+    include('key.txt'); ?>&callback=initMap"></script>
 </body>
 </html>
