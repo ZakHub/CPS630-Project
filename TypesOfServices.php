@@ -2,15 +2,9 @@
 
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <?php include('common.php'); ?>
   <title>GQZ TRAVELS - Types of Services</title>
-  <link rel="stylesheet" href="Main.css">
   <style>
-    a {
-      outline: 2px black;
-    }
-    
     .service-outer {
       padding: 2%;
     }

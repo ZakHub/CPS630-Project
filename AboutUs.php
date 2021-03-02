@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html>
+
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <?php include('common.php'); ?>
   <title>GQZ TRAVELS</title>
-  <link rel="stylesheet" href="Main.css">
   <style>
     header {
       font-family: "DejaVu Sans Mono", sans-serif;
