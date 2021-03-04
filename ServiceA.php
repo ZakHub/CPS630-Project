@@ -28,20 +28,45 @@
       width: 50%;
       height: 40vh;
     }
+    table, td, th {
+      border: 1px solid black;
+      border-collapse: collapse;
+    }
+    td, th {
+      padding: 5px;
+    }
   </style>
   <script>
-    var field_suffixes = [ '-street', '-city', '-province', '-country' ]; /*,
-      '-postal-code' ];*/
+    var field_suffixes = [ '-street', '-city', '-province', '-country' ];
     const osm = 'https://nominatim.openstreetmap.org';
     const defaultZoom = 12;
     var map = null;
+    var route = null;
     var routeConfirmed = false;
-    
-    //function initMap() {
+
     window.onload = function() {
+      restrictDate(document.getElementById('order-date'),'min');
+      
+      initMap();
+    }
+    
+    function restrictDate(element, which) {
+      const today = new Date();
+      var dd = today.getDate();
+      if (dd < 10) {
+        dd = '0'+dd;
+      }
+      var mm = today.getMonth() + 1;
+      if (mm < 10) {
+        mm = '0' + mm;
+      }
+      const yyyy = today.getFullYear();
+      todayDate = yyyy+'-'+mm+'-'+dd;
+      element.setAttribute(which, todayDate);
+    }
+    
+    function initMap() {
       var target = document.getElementById('map-holder');
-      //map = new google.maps.Map(target, { zoom: defaultZoom, center: {lat: 37.4, lng: -122.1}});
-      //map = new google.maps.Map(target, { zoom: defaultZoom });
       map = L.map('map-holder').setView([ 37.4, -122.1 ], defaultZoom);
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -57,8 +82,6 @@
           lat: loc.coords.latitude,
           lng: loc.coords.longitude
         };
-        //map.setOptions({ center: pos });
-        //map.setView(pos, defaultZoom);
         map.panTo(pos);
         
         var xhttp = new XMLHttpRequest();
@@ -76,8 +99,7 @@
           document.getElementById('from-city').value = address.city;
           document.getElementById('from-province').value = address.state;
           document.getElementById('from-country').value = address.country;
-          //document.getElementById('from-postal-code').value = address.postcode;
-          
+
           document.getElementById('to-province').value = address.state;
           document.getElementById('to-country').value = address.country;
         };
@@ -114,23 +136,22 @@
 
         var xhttp = new XMLHttpRequest();
         xhttp.open('GET', osm + '/search?format=json&q=' + address, true);
-        //xhttp.open('GET', osm + '/search?format=json&q=' + address, false);
         xhttp.onreadystatechange = function () {
-          //if (this.readyState !== 4 || this.status !== 200) {
           if (this.readyState === 4 && this.status === 200) {
-            resolve(this.responseText);
+            resolve(JSON.parse(this.responseText));
           }
         };
         xhttp.timeout = 2000;
         xhttp.ontimeout = function (e) {
-          reject(this.status);
+          //reject(this.status);
+          reject(null);
         };
         xhttp.send();
       });
     }
     
-    async function updateMap() {
-      console.log('updateMap() called');
+    async function updateRoute() {
+      console.log('updateRoute() called');
       
       const from = constructAddress('from');
       const to = constructAddress('to');
@@ -145,13 +166,13 @@
       const fromResponsePromise = addressLookup(from);
       const toResponsePromise = addressLookup(to);
       
-      const fromResponse = JSON.parse(await fromResponsePromise);
+      const fromResponse = await fromResponsePromise;
       if (!fromResponse) {
         console.warn('Starting address query did not return a location');
         return;
       }
       
-      const toResponse = JSON.parse(await toResponsePromise);
+      const toResponse = await toResponsePromise;
       if (!toResponse) {
         console.warn('Destination address query did not return a location');
         return;
@@ -169,20 +190,51 @@
       map.panTo(fromPos);
 
       // add route to map
-      
-      routeConfirmed = true;
+      if (!route) {
+        route = L.Routing.control({
+          waypoints: [ fromPos, toPos ],
+          show: false
+        }).on('routesfound', function (e) {
+          const routes = e.routes;
+          distance = routes[0].summary.totalDistance;
+          if (distance > 50000) {
+            alert('Requested route exceeds transport limit of 50Km.');
+            routeConfirmed = false;
+          } else {
+            const carInput = document.querySelector('input[name="car-id"]');
+            const rate = parseFloat(carInput.dataset.rate);
+            const cost = (distance * rate / 1000).toFixed(2);
+            var distanceElement = document.getElementById('distance');
+            distanceElement.dataset.distance = (distance / 1000).toFixed(2);
+            distanceElement.innerHTML = (distance / 1000).toFixed(2) + ' Km';
+            var costElement = document.getElementById('cost');
+            costElement.dataset.cost = cost;
+            costElement.innerHTML = '$' + cost;
+            routeConfirmed = true;
+          }
+        });
+        route.addTo(map);
+      } else {
+        route.setWaypoints([ fromPos, toPos ]);
+      }
+    }
+    
+    function populateVehicles() {
+      // retrieve list of vehicles available on selected date
     }
     
     function addToCart() {
       console.log('addToCart() called');
       if (!routeConfirmed) {
         alert('Update the map before adding this route to your cart');
+        return;
       }
       if (!confirm('Add this trip to cart?')) {
         return;
       }
       
-      
+      var carInput = document.querySelector('input[name="car-id"]');
+      console.log(carInput.value);
       
       routeConfirmed = false;
     }
@@ -220,20 +272,40 @@
           <label for="<?= $loc ?>-country">Country</label>
           <input id="<?= $loc ?>-country" type="text" />
         </p>
-        <!--<p>
-          <label for="<?= $loc ?>-postal-code">Postal Code</label>
-          <input id="<?= $loc ?>-postal-code" type="text" />
-        </p>-->
       </div>
 <?php endforeach; ?>
       <br />
-      <button type="button" onclick="updateMap();">Update</button>
+      <label for="order-date"><strong>Order Date: </strong></label>
+      <input name="order-date" id="order-date" type="date" min="1970-01-01"
+        onchange="populateVehicles();" />
+      <h3>Available vehicles</h3>
+      <table>
+        <tr>
+          <th>Select</th>
+          <th>Model</th>
+          <th>Rate ($/Km)</th>
+        </tr>
+        <!-- sample row -->
+        <!--<tr>
+          <td><input id="car-id-1" name="car-id" type="radio" value="1"
+            data-rate="3.00" /></td>
+          <td><label for="car-id-1">2001 Toyota Corolla</label></td>
+          <td>$3.00</td>
+        </tr>-->
+      </table>
+      <br />
+      <div>
+        <strong>Distance: </strong>
+        <p id="distance" data-distance="" style="display: inline"></p>
+        <br />
+        <strong>Total: </strong>
+        <p id="cost" data-cost="" style="display: inline"></p>
+      </div>
+      <br />
+      
+      <button type="button" onclick="updateRoute();">Update</button>
       <button type="button" onclick="addToCart();">Add to cart</button>
     </div>
   </div>
-  
-  <!-- map initialization script for google maps -->
-  <!--<script async src="https://maps.googleapis.com/maps/api/js?key=<?php
-    include('key.txt'); ?>&callback=initMap"></script>-->
 </body>
 </html>
