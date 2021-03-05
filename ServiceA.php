@@ -44,8 +44,8 @@
     var route = null;
     var routeConfirmed = false;
 
-    window.onload = function() {
-      restrictDate(document.getElementById('order-date'),'min');
+    window.onload = function () {
+      restrictDate(document.getElementById('fulfillment-date'), 'min');
       
       initMap();
     }
@@ -130,6 +130,21 @@
       return addr;
     }
     
+    function updateCost() {
+      const carInput = document.querySelector('input[name="car-id"]:checked');
+      if (!carInput) {
+        return;
+      }
+      const rate = parseFloat(carInput.dataset.rate);
+      const cost = (distance * rate / 1000).toFixed(2);
+      var distanceElement = document.getElementById('distance');
+      distanceElement.dataset.distance = (distance / 1000).toFixed(2);
+      distanceElement.innerHTML = (distance / 1000).toFixed(2) + ' Km';
+      var costElement = document.getElementById('cost');
+      costElement.dataset.cost = cost;
+      costElement.innerHTML = '$' + cost;
+    }
+    
     async function addressLookup(address) {
       return new Promise(function (resolve, reject) {
         var response;
@@ -201,17 +216,11 @@
             alert('Requested route exceeds transport limit of 50Km.');
             routeConfirmed = false;
           } else {
-            const carInput = document.querySelector('input[name="car-id"]');
-            const rate = parseFloat(carInput.dataset.rate);
-            const cost = (distance * rate / 1000).toFixed(2);
-            var distanceElement = document.getElementById('distance');
-            distanceElement.dataset.distance = (distance / 1000).toFixed(2);
-            distanceElement.innerHTML = (distance / 1000).toFixed(2) + ' Km';
-            var costElement = document.getElementById('cost');
-            costElement.dataset.cost = cost;
-            costElement.innerHTML = '$' + cost;
             routeConfirmed = true;
           }
+        }).on('routeselected', function (e) {
+          console.log(e);
+          updateCost();
         });
         route.addTo(map);
       } else {
@@ -220,7 +229,44 @@
     }
     
     function populateVehicles() {
+      function reportError(e) {
+        alert('Failed to retrieve available cars. Additional details can be \
+          found inthe console');
+        console.error(e);
+      }
+      
       // retrieve list of vehicles available on selected date
+      var date = document.getElementById('fulfillment-date').value;
+      var xhttp = new XMLHttpRequest();
+      xhttp.open('GET', 'retrievecars.php?date=' + date, true);
+      xhttp.onreadystatechange = function () {
+        if (this.readyState !== 4 || this.status !== 200) {
+          return;
+        }
+        var response = JSON.parse(this.responseText);
+        if (response.status === 'Failure') {
+          reportError(e);
+          return;
+        }
+        response = response.results;
+        
+        html = document.getElementById('car-header').innerHTML;
+        for (var car of response) {
+          html += '<tr>';
+          html += '<td><input id="car-id-'+car.id+'" name="car-id" type="radio" value="'+car.id+'" data-rate="'+car.rate+'" /></td>';
+          html += '<td><label for="car-id-'+car.id+'">'+car.model+'</label></td>';
+          html += '<td>$'+car.rate.toFixed(2)+'</td>';
+          html += '</tr>';
+        }
+        document.getElementById('available-cars').innerHTML = html;
+      };
+      xhttp.timeout = 2000;
+      xhttp.ontimeout = function (e) {
+        reportError(e);
+        return;
+      };
+      
+      xhttp.send();
     }
     
     function addToCart() {
@@ -234,7 +280,9 @@
       }
       
       var carInput = document.querySelector('input[name="car-id"]');
-      console.log(carInput.value);
+      //console.log(carInput.value);
+      
+      
       
       routeConfirmed = false;
     }
@@ -276,11 +324,12 @@
 <?php endforeach; ?>
       <br />
       <label for="order-date"><strong>Order Date: </strong></label>
-      <input name="order-date" id="order-date" type="date" min="1970-01-01"
-        onchange="populateVehicles();" />
+      <input name="fulfillment-date" id="fulfillment-date" type="date"
+        min="1970-01-01" onchange="populateVehicles();" />
       <h3>Available vehicles</h3>
-      <table>
-        <tr>
+      <p>Select a date to list available vehicles</p>
+      <table id="available-cars">
+        <tr id="car-header">
           <th>Select</th>
           <th>Model</th>
           <th>Rate ($/Km)</th>
