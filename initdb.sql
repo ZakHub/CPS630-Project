@@ -26,7 +26,8 @@ CREATE TABLE Product (
 
 CREATE TABLE Car (
 	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-	model VARCHAR(255) NOT NULL CHECK (model <> '')
+	model VARCHAR(255) NOT NULL CHECK (model <> ''),
+	rate DOUBLE DEFAULT 1.00
 	-- car code
 	-- availability code
 );
