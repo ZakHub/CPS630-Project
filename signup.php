@@ -13,7 +13,7 @@ $password2 = $_POST['password-repeat'];
 
 
 
-$insertsql = "INSERT INTO UserInfo(username,firstName, lastName,phoneNumber,email,address,passwrd) VALUES ('$username','$firstName', '$lastName','$phoneNumber','$email','$$address','$password1')";
+$insertsql = "INSERT INTO UserInfo(username,firstName, lastName,phoneNumber,email,address,passwrd) VALUES ('$username','$firstName', '$lastName','$phoneNumber','$email','$address','$password1')";
 
 $selectsql = "SELECT username, passwrd  FROM UserInfo WHERE username='$username'";
 $result = $conn->query($selectsql);
