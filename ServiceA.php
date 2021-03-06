@@ -166,8 +166,6 @@
     }
     
     async function updateRoute() {
-      console.log('updateRoute() called');
-      
       const from = constructAddress('from');
       const to = constructAddress('to');
       if (from === null) {
@@ -219,7 +217,6 @@
             routeConfirmed = true;
           }
         }).on('routeselected', function (e) {
-          console.log(e);
           updateCost();
         });
         route.addTo(map);

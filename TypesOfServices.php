@@ -34,7 +34,6 @@
       <div class="service-outer">
         <div id="service-a" class="service floating"
           onclick="location.href='ServiceA.php';">
-          <!--<h3><a href="ServiceA.php">Travel</a></h3>-->
           <h2>Travel</h2>
           <p>Our renowened transport service. We'll take you anywhere within
             50Km. That's enough to get you anywhere in the city.</p>
@@ -44,7 +43,6 @@
       <div class="service-outer">
         <div id="service-b" class="service floating"
           onclick="location.href='ServiceB.php';">
-          <!--<h3><a href="ServiceB.php">Delivery</a></h3>-->
           <h2>Delivery</h2>
           <p>Our new delivery service will bring the products you want from the
             partnered stores you love.</p>

@@ -34,17 +34,23 @@ if (isset($_GET['date'])) {
 if (!$stmt->execute()) {
 	die(constructError('Failed to execute query: ' . $stmt->error));
 }
-if (!$stmt->bind_result($id, $model, $rate)) {
+/*if (!$stmt->bind_result($id, $model, $rate)) {
 	die(constructError('Failed to bind results: ' . $stmt->error));
 }
 while (($row = $stmt->fetch())) {
 	$row = array( 'id' => $id, 'model' => $model, 'rate' => $rate );
 	array_push($cars['results'], $row);
+}*/
+$result = $stmt->get_result();
+if (!$result) {
+	die(constructError('Failed to get results of query: ' . $stmt->error));
+}
+while ($row = $result->fetch_assoc()) {
+	array_push($cars['results'], $row);
 }
 $stmt->close();
+$conn->close();
 
 echo json_encode($cars);
-
-$conn->close();
 
 ?>

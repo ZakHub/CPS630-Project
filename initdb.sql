@@ -21,6 +21,7 @@ CREATE TABLE Product (
 	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 	description VARCHAR(255) NOT NULL CHECK (description <> ''),
 	storeId INT UNSIGNED,
+	price DOUBLE NOT NULL,
 	FOREIGN KEY (storeId) REFERENCES Store(id)
 );
 
