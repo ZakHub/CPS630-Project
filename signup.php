@@ -2,13 +2,20 @@
 // This file validates the information and adds it into the database.
 require("connect.php");
 
-$username = $_POST['username'];
+$firstName = $_POST['firstName'];
+$lastName = $_POST['lastName'];
+$phoneNumber = $_POST['phoneNumber'];
+$email = $_POST['eamil'];
+$address = $_POST['address'];
 $password1 = $_POST['password'];
 $password2 = $_POST['password-repeat'];
 
-$insertsql = "INSERT INTO Users(Username, Password) VALUES ('$username', '$password1')";
 
-$selectsql = "SELECT Username, Password FROM Users WHERE Username='$username'";
+
+
+$insertsql = "INSERT INTO UserInfo(firstName, lastName,phoneNumber,email,address,password) VALUES ('$firstName', '$lastName','phoneNumber''email''address''password')";
+
+$selectsql = "SELECT firstName, password FROM UserInfo WHERE firstName='$firstName'";
 $result = $conn->query($selectsql);
 
 //username already exists in our table, redirecting to retry page
