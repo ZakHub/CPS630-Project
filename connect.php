@@ -2,7 +2,7 @@
 /* Connects to MySQL Database */
 
 function constructError($e) {
-    return "{ status: \"Failed\", error: \"" . $e . "\" }";
+    return json_encode(array('status' => 'Failed', 'error' => '"' . $e . '"'));
 }
 
 // Login Credentials
