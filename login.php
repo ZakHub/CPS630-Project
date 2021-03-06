@@ -11,8 +11,8 @@ if(isset($_POST['login'])){
     if ($result->num_rows > 0){
         // set session variables & redirect to homepage
         $_SESSION['username'] = $username;
-        $_SESSION['id'] = $row['ID'];
-        header("Location:/CPS630ProjectMain.php");
+        $_SESSION['id'] = $row['id'];
+        header("Location:/myProject/CPS630ProjectMain.php");
     }
 
     //login failed, redirecting to retry page

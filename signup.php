@@ -20,12 +20,12 @@ $result = $conn->query($selectsql);
 
 //username already exists in our table, redirecting to retry page
 if ($result->num_rows > 0){
-    header("Location: /Signup.html");
+    header("Location:/myProject/Signup.html");
 }
 
 //username created, redirecting to login page 
 else if ($conn->query($insertsql) === TRUE) {
-    header("Location:/login.html");
+    header("Location:/myProject/login.html");
 }
 
 else{
