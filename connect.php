@@ -7,11 +7,11 @@ function constructError($e) {
 
 // Login Credentials
 $servername = "localhost";
-//$username = "root";
-$username = "project";
+$username = "root";
+//$username = "project";
 $password = "";
-//$dbname = "P2S";
-$dbname = "project";
+$dbname = "P2S";
+//$dbname = "project";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
