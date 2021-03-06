@@ -25,7 +25,7 @@
             </tr>
             <tr>
                 <td>Trip Table</td>
-                <td><a href="listtrip.phpp" target="_blank">Go to delete</a></td>>
+                <td><a href="listtrip.php" target="_blank">Go to delete</a></td>>
             </tr>
             <tr>
                 <td>UserInfo Table</td>

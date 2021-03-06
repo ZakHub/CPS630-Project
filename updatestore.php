@@ -10,18 +10,20 @@
         <!-- Navigation -->
         <?php include('navbar.php'); ?>
         <br><br><br>
-        <h3>Product table</h3>
+        <h3>Store table</h3>
         <?php
         include("connect.php");
-        $sql = "SELECT id, description, storeId FROM product";
+        $sql = "SELECT id, storeName, lat, lng FROM store";
         $result = $conn->query($sql);
         if ($result->num_rows > 0) {
             // output data of each row
-            echo "<table><tr><th>ID</th><th>description</th><th>storeId</th></tr>";
+
+            echo "<table><tr><th>ID</th><th>StoreName</th><th>LAT</th><th>LNG</th></tr>";
             while ($row = $result->fetch_assoc()) {
 
-                echo "<tr><td>".$row["id"]."</td><td>".$row["description"]."<td>".$row["storeId"]."</td>"."<td><a href=productdelete.php?id={$row['id']}' >delete</a></td></tr>";
+                echo "<tr><td>".$row["id"]."</td><td>".$row["storeName"]."</td><td>".$row["lat"]."</td><td>".$row["lng"]."</td>"."<td><a href='storeupdate.php?id={$row['id']}' >Update</a></td></tr>";
             }
+            echo "</table>";
         } else {
             echo "There are nothing available at the moment. Please try again later.";
         }
@@ -31,4 +33,3 @@
 </div>
 </body>
 </html>
-

@@ -20,7 +20,7 @@
             echo "<table><tr><th>ID</th><th>model</th><th>rate</th></tr>";
             while ($row = $result->fetch_assoc()) {
 
-                echo "<tr><td>".$row["id"]."</td><td>".$row["model"]."<td>".$row["rate"]."</td>"."<td><a href=cardelete?id={$row['id']}' >delete</a></td></tr>";
+                echo "<tr><td>".$row["id"]."</td><td>".$row["model"]."<td>".$row["rate"]."</td>"."<td><a href=cardelete.php?id={$row['id']}' >delete</a></td></tr>";
             }
         } else {
             echo "There are nothing available at the moment. Please try again later.";

@@ -20,7 +20,7 @@
             echo "<table><tr><th>ID</th><th>description</th><th>storeId</th></tr>";
             while ($row = $result->fetch_assoc()) {
 
-                echo "<tr><td>".$row["id"]."</td><td>".$row["description"]."<td>".$row["storeId"]."</td>"."<td><a href=productdelete.php?id={$row['id']}' >delete</a></td></tr>";
+                echo "<tr><td>".$row["id"]."</td><td>".$row["description"]."<td>".$row["storeId"]."</td>"."<td><a href=productupdate.php?id={$row['id']}' >update</a></td></tr>";
             }
         } else {
             echo "There are nothing available at the moment. Please try again later.";
@@ -31,4 +31,3 @@
 </div>
 </body>
 </html>
-

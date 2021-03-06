@@ -3,7 +3,7 @@ $id=$_GET['id'];
 include("connect.php");
 
 // sql to delete a record
-$sql = "DELETE FROM userInfo WHERE id={$id}";
+$sql = "DELETE FROM userinfo WHERE id={$id}";
 
 if ($conn->query($sql) === TRUE) {
     echo "Record deleted successfully";

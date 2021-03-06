@@ -10,17 +10,17 @@
         <!-- Navigation -->
         <?php include('navbar.php'); ?>
         <br><br><br>
-        <h3>Product table</h3>
+        <h3>Trip table</h3>
         <?php
         include("connect.php");
-        $sql = "SELECT id, description, storeId FROM product";
+        $sql = "SELECT id, fromLat,fromLng,toLat ,toLng ,distance ,carId ,price FROM Trip ";
         $result = $conn->query($sql);
         if ($result->num_rows > 0) {
             // output data of each row
-            echo "<table><tr><th>ID</th><th>description</th><th>storeId</th></tr>";
+            echo "<table><tr><th>ID</th><th>fromLat</th><th>fromLng</th><th>toLat</th><th>toLng</th><th>distance</th><th>carId</th><th>price</th></tr>";
             while ($row = $result->fetch_assoc()) {
 
-                echo "<tr><td>".$row["id"]."</td><td>".$row["description"]."<td>".$row["storeId"]."</td>"."<td><a href=productdelete.php?id={$row['id']}' >delete</a></td></tr>";
+                echo "<tr><td>".$row["id"]."</td><td>".$row["fromLat"]."<td>".$row["fromLng"]."</td><td>".$row["toLat"]."</td><td>".$row["toLng"]."</td><td>".$row["distance"]."</td><td>".$row["carId"]."</td><td>".$row["price"]."</td><td><a href=tripupdate.php?id={$row['id']}' >update</a></td></tr>";
             }
         } else {
             echo "There are nothing available at the moment. Please try again later.";
@@ -31,4 +31,3 @@
 </div>
 </body>
 </html>
-

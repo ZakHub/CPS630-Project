@@ -21,23 +21,23 @@
             </tr>
             <tr>
                 <td>Car Table</td>
-                <td><a href="listcar" target="_blank">Go to Query</a></td>
+                <td><a href="listcar.php" target="_blank">Go to Query</a></td>
             </tr>
             <tr>
                 <td>Trip Table</td>
-                <td><a href="listtrip" target="_blank">Go to Query</a></td>>
+                <td><a href="listtrip.php" target="_blank">Go to Query</a></td>>
             </tr>
             <tr>
                 <td>UserInfo Table</td>
-                <td><a href="listuserinfo" target="_blank">Go to Query</a></td>
+                <td><a href="listuserinfo.php" target="_blank">Go to Query</a></td>
             </tr>
             <tr>
                 <td>OrderInfo Table</td>
-                <td><a href="listorderinfo" target="_blank">Go to Query</a></td>
+                <td><a href="listorderinfo.php" target="_blank">Go to Query</a></td>
             </tr>
             <tr>
                 <td>OrderedItem Table</td>
-                <td><a href="listorderitem" target="_blank">Go to Query</a></td>
+                <td><a href="listorderitem.php" target="_blank">Go to Query</a></td>
             </tr>
         </table>
       

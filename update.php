@@ -34,11 +34,11 @@
             </tr>
             <tr>
                 <td>OrderInfo Table</td>
-                <td><a href="updateorderinfo" target="_blank">Go to Update</a></td>
+                <td><a href="updateorderinfo.php" target="_blank">Go to Update</a></td>
             </tr>
             <tr>
                 <td>OrderedItem Table</td>
-                <td><a href="updateordereditem" target="_blank">Go to Update</a></td>
+                <td><a href="updateordereditem.php" target="_blank">Go to Update</a></td>
             </tr>
         </table>
       

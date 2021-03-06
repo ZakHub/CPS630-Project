@@ -10,17 +10,17 @@
         <!-- Navigation -->
         <?php include('navbar.php'); ?>
         <br><br><br>
-        <h3>Product table</h3>
+        <h3>Car table</h3>
         <?php
         include("connect.php");
-        $sql = "SELECT id, description, storeId FROM product";
+        $sql = "SELECT id, model, rate FROM car";
         $result = $conn->query($sql);
         if ($result->num_rows > 0) {
             // output data of each row
-            echo "<table><tr><th>ID</th><th>description</th><th>storeId</th></tr>";
+            echo "<table><tr><th>ID</th><th>model</th><th>rate</th></tr>";
             while ($row = $result->fetch_assoc()) {
 
-                echo "<tr><td>".$row["id"]."</td><td>".$row["description"]."<td>".$row["storeId"]."</td>"."<td><a href=productdelete.php?id={$row['id']}' >delete</a></td></tr>";
+                echo "<tr><td>".$row["id"]."</td><td>".$row["model"]."<td>".$row["rate"]."</td>"."<td><a href=carupdate.php?id={$row['id']}' >update</a></td></tr>";
             }
         } else {
             echo "There are nothing available at the moment. Please try again later.";
