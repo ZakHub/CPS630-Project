@@ -18,10 +18,10 @@
   <div class="dropdown">
     <button class="dropbtn">db Maintain</button>
     <div class="dropdown-content">
-      <a href=insert.html">Insert</a>
-      <a href="delete.php">Delete</a>
-      <a href="update.php">Update</a>
-      <a href="select.php">Select</a>
+      <a href="insert.php" target="_blank">Insert</a>
+      <a href="delete.php" target="_blank">Delete</a>
+      <a href="update.php" target="_blank">Update</a>
+      <a href="select.php" target="_blank">Select</a>
     </div>
   </div>
 <?php endif; ?>
