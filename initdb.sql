@@ -64,7 +64,7 @@ CREATE TABLE UserInfo (
 	firstName VARCHAR(255) NOT NULL,
 	lastName VARCHAR(255) NOT NULL,
 	phoneNumber VARCHAR(15) NOT NULL,
-	email VARCHAR(255) NOT NULL,
+	email VARCHAR(255) NOT NULL UNIQUE,
 	address VARCHAR(255) NOT NULL,
 	passwrd VARCHAR(255) NOT NULL CHECK (passwrd <> ''),
 	balance DOUBLE DEFAULT 0.00
