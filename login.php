@@ -12,7 +12,7 @@ if(isset($_POST['login'])){
         // set session variables & redirect to homepage
         $_SESSION['username'] = $username;
         $_SESSION['id'] = $row['id'];
-        header("Location:/myProject/CPS630ProjectMain.php");
+        header("Location:CPS630ProjectMain.php");
     }
 
     //login failed, redirecting to retry page

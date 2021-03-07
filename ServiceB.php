@@ -3,6 +3,7 @@
 <html lang="en">
 <head>
   <?php include('common.php'); ?>
+<?php if (isset($_SESSION['id'])): ?>
   <title>GQZ TRAVELS - Delivery Service</title>
   <style>
     .store > * {
@@ -59,7 +60,7 @@
     
     function populateStores() {
       var xhttp = new XMLHttpRequest();
-      xhttp.open('GET', 'retrievestores.php', true);
+      xhttp.open('GET', 'api/retrievestores.php', true);
       xhttp.onreadystatechange = function () {
         if (this.readyState !== 4 || this.status !== 200) {
           return;
@@ -92,7 +93,7 @@
     
     function populateProducts(store, target_id) {
       var xhttp = new XMLHttpRequest();
-      xhttp.open('GET', 'retrieveproducts.php?storeId=' + store.id, true);
+      xhttp.open('GET', 'api/retrieveproducts.php?storeId=' + store.id, true);
       xhttp.onreadystatechange = function () {
         if (this.readyState !== 4 || this.status !== 200) {
           return;
@@ -153,12 +154,32 @@
     }
     
     function addToCart(productJSON) {
-      console.log(productJSON);
-      var product = JSON.parse(productJSON);
-      console.log(product);
+      //console.log(productJSON);
+      //var product = JSON.parse(productJSON);
+      //console.log(product);
       
       // create php API to add product to cart
       // show notification that product added successfully
+      const request = {
+        type: 'Product',
+        content: JSON.parse(productJSON)
+      };
+      var xhttp = new XMLHttpRequest();
+      xhttp.open('POST', 'api/addtocart.php', true);
+      xhttp.onreadystatechange = function () {
+        if (this.readyState !== 4 || this.status !== 200) {
+          return;
+        }
+        console.log(this.responseText);
+        //if (this.
+      };
+      xhttp.timeout = 2000;
+      xhttp.ontimeout = function (e) {
+        alert('Failed to add item to cart. Please refresh the page and try again.');
+        console.log(e);
+      }
+      xhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+      xhttp.send(JSON.stringify(request));
     }
   </script>
 </head>
@@ -187,4 +208,21 @@
     </div>
   </div>  
 </body>
+<?php else: ?>
+  <script>
+    function redirect() {
+      location.href = 'login.html';
+    }
+    
+    window.onload = function () {
+      setTimeout(redirect, 2000);
+    };
+  </script>
+</head>
+<body>
+  <p>Redirecting you to the login page shortly.</p>
+  <p>If you are not being redirected, please click here to go to login page</p>
+  <button type="button" onclick="redirect();">Go to login page</button>
+</body>
+<?php endif; ?>
 </html>

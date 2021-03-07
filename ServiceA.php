@@ -3,6 +3,7 @@
 <html lang="en">
 <head>
   <?php include('common.php'); ?>
+<?php if (isset($_SESSION['id'])): ?>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
     integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
     crossorigin=""/>
@@ -235,7 +236,7 @@
       // retrieve list of vehicles available on selected date
       var date = document.getElementById('fulfillment-date').value;
       var xhttp = new XMLHttpRequest();
-      xhttp.open('GET', 'retrievecars.php?date=' + date, true);
+      xhttp.open('GET', 'api/retrievecars.php?date=' + date, true);
       xhttp.onreadystatechange = function () {
         if (this.readyState !== 4 || this.status !== 200) {
           return;
@@ -272,12 +273,12 @@
         alert('Update the map before adding this route to your cart');
         return;
       }
+      var carInput = document.querySelector('input[name="car-id"]');
+      console.log(carInput.value);
       if (!confirm('Add this trip to cart?')) {
         return;
       }
       
-      var carInput = document.querySelector('input[name="car-id"]');
-      //console.log(carInput.value);
       
       
       
@@ -354,4 +355,21 @@
     </div>
   </div>
 </body>
+<?php else: ?>
+  <script>
+    function redirect() {
+      location.href = 'login.html';
+    }
+    
+    window.onload = function () {
+      setTimeout(redirect, 2000);
+    };
+  </script>
+</head>
+<body>
+  <p>Redirecting you to the login page shortly.</p>
+  <p>If you are not being redirected, please click here to go to login page</p>
+  <button type="button" onclick="redirect();">Go to login page</button>
+</body>
+<?php endif; ?>
 </html>

@@ -3,7 +3,9 @@
   <img src="Logo2.png" width="80" height="100"
     class="d-inline-block align-top" alt="logo"/>
   <a href="CPS630ProjectMain.php">Home</a>
+<?php if (!isset($_SESSION['id'])): ?>
   <a href="SignUp.html">Sign Up</a>
+<?php endif; ?>
 <?php if (isset($_SESSION['username'])): ?>
   <a href="logout.php">Log Out</a>
 <?php else: ?>

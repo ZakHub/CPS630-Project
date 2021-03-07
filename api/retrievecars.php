@@ -3,7 +3,7 @@
 /* retrieve available cars on date provided by get argument "date" */
 /* used by ServiceA.php */
 
-include('connect.php');
+include('../connect.php');
 
 $cars = array('status' => 'Success', 'results' => array());
 $query = 'SELECT * FROM Car';

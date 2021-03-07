@@ -1,8 +1,13 @@
 <!-- Common initialization stuff for user-facing pages -->
 
 <?php
+  include('cartClass.php');
+
   ob_start();
   session_start();
+  if (!isset($_SESSION['cart'])) {
+    $_SESSION['cart'] = new Cart(); // this doesn't seem to work
+  }
 ?>
 
 <meta charset="UTF-8">
