@@ -6,7 +6,7 @@
   ob_start();
   session_start();
   if (!isset($_SESSION['cart'])) {
-    $_SESSION['cart'] = new Cart(); // this doesn't seem to work
+    $_SESSION['cart'] = new Cart(); // this kind of works. need ShoppingCart.php to test
   }
 ?>
 
