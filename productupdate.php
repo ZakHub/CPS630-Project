@@ -21,7 +21,7 @@
             $row = $result->fetch_assoc();
         }
         ?>
-        <form action="lastproductupdate.php.php" method="post">
+        <form action="lastproductupdate.php" method="post">
             id:<input type="text" name="id" readonly value="<?php echo $row['id']?>"><br>
             description:<input type="text" name="description" value="<?php echo $row['description']?>"><br>
             storeId: <input type="text" name="storeId" value="<?php echo $row['storeId']?>"><br>

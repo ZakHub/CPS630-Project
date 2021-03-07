@@ -29,7 +29,7 @@
             toLng: <input type="text" name="toLng" value="<?php echo $row['toLng']?>"><br>
             distance: <input type="text" name="distance" value="<?php echo $row['distance']?>"><br>
             carId: <input type="text" name="carId" value="<?php echo $row['carId']?>"><br>
-            price: <input type="text" name="toLat" value="<?php echo $row['price']?>"><br>
+            price: <input type="text" name="price" value="<?php echo $row['price']?>"><br>
             <input type="submit" value="update">
         </form>
         <?php

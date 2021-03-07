@@ -20,7 +20,7 @@
             echo "<table><tr><th>ID</th><th>fromLat</th><th>fromLng</th><th>toLat</th><th>toLng</th><th>distance</th><th>carId</th><th>price</th></tr>";
             while ($row = $result->fetch_assoc()) {
 
-                echo "<tr><td>".$row["id"]."</td><td>".$row["fromLat"]."</td><td>".$row["fromLng"]."</td><td>".$row["toLat"]."</td><td>".$row["toLng"]."</td><td>".$row["distance"]."</td><td>".$row["carId"]."</td><td>".$row["price"]."</td><td><a href=tripdelete.php?id={$row['id']}' >delete</a></td></tr>";
+                echo "<tr><td>".$row["id"]."</td><td>".$row["fromLat"]."</td><td>".$row["fromLng"]."</td><td>".$row["toLat"]."</td><td>".$row["toLng"]."</td><td>".$row["distance"]."</td><td>".$row["carId"]."</td><td>".$row["price"]."</td><td><a href='tripdelete.php?id={$row['id']}' >delete</a></td></tr>";
             }
         } else {
             echo "There are nothing available at the moment. Please try again later.";

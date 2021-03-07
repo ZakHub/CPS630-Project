@@ -7,7 +7,9 @@ $lastName = $_POST['lastname'];
 $phoneNumber = $_POST['phone'];
 $email = $_POST['email'];
 $address = $_POST['address'];
-$password1 = $_POST['password'];
+
+$password = $_POST['password'];
+$password1 =md5($password);
 $password2 = $_POST['password-repeat'];
 
 

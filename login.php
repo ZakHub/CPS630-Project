@@ -4,7 +4,8 @@ require("connect.php");
 if(isset($_POST['login'])){
     $username = $_POST['username'];
     $password = $_POST['password'];
-    $sql = "SELECT id,Username, passwrd  FROM UserInfo WHERE Username='$username' AND passwrd ='$password'";
+    $password1 = md5($password);
+    $sql = "SELECT id,Username, passwrd  FROM UserInfo WHERE Username='$username' AND passwrd ='$password1'";
     $result = $conn->query($sql);
     $row = $result->fetch_assoc();
 

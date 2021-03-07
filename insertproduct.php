@@ -15,7 +15,7 @@
         <form action="productinsert.php" method="post">
             Description:<input type="text" name="Description"><br>
             StoreId:<input type="text" name="StoreId"><br>
-
+            Price:<input type="text" name="price"><br>
             <input type="submit">
             <input type="reset">
         </form>
