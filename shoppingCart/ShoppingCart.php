@@ -2,7 +2,6 @@
 # Connect to the database
 require('db_connect.php');
  
-# Get student names
 # Define the query to send to the database
 $query_cart = 'SELECT * FROM product ORDER BY cartID';
 # We use a prepared statement to execute the query
