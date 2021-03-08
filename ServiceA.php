@@ -314,7 +314,6 @@
         }
         const response = JSON.parse(this.responseText);
         if (response.status === 'Success') {
-          //alert('Success');
           if (confirm('Success. Go to cart?')) {
             location.href = 'ShoppingCart.php';
           }

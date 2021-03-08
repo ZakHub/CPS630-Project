@@ -19,4 +19,10 @@ VALUES
 	('Orchid', 1, 2.33),
 	('Excel Gum', 2, 1.00);
 
+-- INSERT INTO Review
+	-- (feedback, userId)
+-- VALUES
+	-- ('This is feedback provided by user 1', 1),
+	-- ('This is some more feedback kindly provided by user 2', 3);
+
 COMMIT;

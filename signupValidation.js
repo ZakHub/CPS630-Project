@@ -1,7 +1,7 @@
 // This javascript file is form validation. 
 function Validator(username,email, password1, password2) {
     var nameExp = /^[0-9A-Za-z]+$/;
-    var emailExp=/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+    var emailExp=/^[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)*@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
     // Checks to see if the username, password, and password2 match the expression above. If it does it match it means that the information is formatted correctly. 
     if (!username.value.match(nameExp) || !password1.value.match(nameExp) || !password2.value.match(nameExp)){
         alert("Invalid format!");
@@ -18,6 +18,7 @@ function Validator(username,email, password1, password2) {
         return false;
     }
     else if(!email.value.match(emailExp)){
+        alert('Email is not in a valid format');
         return false;
     }
     

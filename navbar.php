@@ -13,8 +13,8 @@
 <?php endif; ?>
   <a href="AboutUs.php">About Us</a>
   <a href="ContactUs.php">Contact Us</a>
-  <a href="Review.html" >Reviews</a>
-  <a href="ShoppingCart.html" >Shopping Cart</a>
+  <a href="Reviews.php">Reviews</a>
+  <a href="ShoppingCart.html">Shopping Cart</a>
   <a href="TypesOfServices.php">Types of Services</a>
 <?php if (isset($_SESSION['id']) && $_SESSION['id'] == 1): ?>
   <div class="dropdown">

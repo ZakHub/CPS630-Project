@@ -3,12 +3,11 @@
 include('../cartClass.php');
 session_start();
 
-$cart = $_SESSION['cart'];
-
-//echo json_encode($_SESSION);
+$cart = unserialize($_SESSION['cart']);
 $req = json_decode(file_get_contents('php://input'));
 
 $return = array('status' => 'Success');
+$fail = array('status' => 'Failure', 'error' => 'Unsupported service type.');
 if ($req->type == 'Trip') {
 	$trip = $req->content;
 	$cart->addTrip($trip);
@@ -18,10 +17,9 @@ if ($req->type == 'Trip') {
 	$cart->addProduct($product);
 	echo json_encode($return);
 } else {
-	echo json_encode(array('status' => 'Failure', 'error' => 'Unsupported service type.'));
+	echo json_encode($fail);
 }
 
-echo json_encode($cart);
-$_SESSION['cart'] = $cart;
+$_SESSION['cart'] = serialize($cart);
 
 ?>
