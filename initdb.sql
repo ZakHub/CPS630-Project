@@ -72,7 +72,7 @@ CREATE TABLE UserInfo (
 
 CREATE TABLE Review (
 	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-	feedback VARCHAR(65532) NOT NULL CHECK(feedback <> ''),
+	feedback TEXT NOT NULL CHECK(feedback <> ''),
 	userId INT UNSIGNED NOT NULL,
 	FOREIGN KEY (userId) REFERENCES UserInfo(id)
 );

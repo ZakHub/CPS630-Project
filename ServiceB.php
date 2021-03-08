@@ -170,8 +170,15 @@
         if (this.readyState !== 4 || this.status !== 200) {
           return;
         }
-        console.log(this.responseText);
-        //if (this.
+        const response = JSON.parse(this.responseText);
+        if (response.status === 'Success') {
+          if (confirm('Success. Go to cart?')) {
+            location.href = 'ShoppingCart.php'
+          }
+        } else {
+          alert('Failed to add item to cart. Check the console for details.');
+          console.error(response.error);
+        }
       };
       xhttp.timeout = 2000;
       xhttp.ontimeout = function (e) {

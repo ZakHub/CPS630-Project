@@ -18,7 +18,7 @@ if(isset($_POST['login'])){
 
     //login failed, redirecting to retry page
     else{
-        header("Location:/Login.html");
+        header("Location:login.html");
     }
 }
 

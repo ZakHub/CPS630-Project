@@ -273,14 +273,63 @@
         alert('Update the map before adding this route to your cart');
         return;
       }
-      var carInput = document.querySelector('input[name="car-id"]');
-      console.log(carInput.value);
+      const dateInput = document.getElementById('fulfillment-date');
+      if (!dateInput || !dateInput.value) {
+        alert('Select a date for the order to be fulfilled before adding ' +
+          'this route to your cart');
+        return;
+      }
+      const carInput = document.querySelector('input[name="car-id"]:checked');
+      console.log(carInput);
+      if (!carInput || !carInput.value) {
+        alert('Select a car before adding the route to your card');
+        return;
+      }
       if (!confirm('Add this trip to cart?')) {
         return;
       }
       
+      const waypoints = route.options.waypoints;
+      const trip = {
+        fromLat: waypoints[0].lat,
+        fromLng: waypoints[0].lng,
+        toLat: waypoints[1].lat,
+        toLng: waypoints[1].lng,
+        distance: document.getElementById('distance').dataset.distance,
+        carId: carInput.value,
+        price: document.getElementById('cost').dataset.cost,
+        fulfillmentDate: document.getElementById('fulfillment-date').value
+      };
+      console.log(trip);
       
-      
+      const request = {
+        type: "Trip",
+        content: trip
+      };
+      var xhttp = new XMLHttpRequest();
+      xhttp.open('POST', 'api/addtocart.php');
+      xhttp.onreadystatechange = function () {
+        if (this.readyState !== 4 || this.status !== 200) {
+          return;
+        }
+        const response = JSON.parse(this.responseText);
+        if (response.status === 'Success') {
+          //alert('Success');
+          if (confirm('Success. Go to cart?')) {
+            location.href = 'ShoppingCart.php';
+          }
+        } else {
+          alert('Failed to add trip to cart. Check console for details.');
+          console.error(response.error);
+        }
+      };
+      xhttp.timeout = 2000;
+      xhttp.ontimeout = function (e) {
+        alert('Failed to add item to cart. Please refresh the page and try again.');
+        console.log(e);
+      }
+      xhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+      xhttp.send(JSON.stringify(request));
       
       routeConfirmed = false;
     }

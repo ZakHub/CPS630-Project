@@ -5,8 +5,10 @@
 
   ob_start();
   session_start();
-  if (!isset($_SESSION['cart'])) {
-    $_SESSION['cart'] = new Cart(); // this kind of works. need ShoppingCart.php to test
+  if (isset($_SESSION['id']) && !isset($_SESSION['cart'])) {
+    //$_SESSION['cart'] = new Cart(); // this kind of works. need ShoppingCart.php to test
+    $cart = new Cart();
+    $_SESSION['cart'] = serialize($cart);
   }
 ?>
 
