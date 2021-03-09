@@ -3,8 +3,8 @@
 <html lang="en">
 <head>
   <?php include('common.php'); ?>
-<?php if (isset($_SESSION['id'])): ?>
   <title>GQZ TRAVELS - Delivery Service</title>
+<?php if (isset($_SESSION['id'])): ?>
   <style>
     .store > * {
       padding: 2vh 2vw;
@@ -189,17 +189,21 @@
       xhttp.send(JSON.stringify(request));
     }
   </script>
+<?php endif; ?>
 </head>
 <body>
+<?php if (isset($_SESSION['id'])): ?>
   <div id="overlay">
     <img id="cart" alt="shopping cart" src="cart.png"
       ondragover="allowDrop(event);" ondrop="drop(event);" />
   </div>
+<?php endif; ?>
   <div id="outer">
     <div id="inner" class="floating">
       <!-- Navigation -->
       <?php include('navbar.php'); ?>
 
+<?php if (isset($_SESSION['id'])): ?>
       <h1>Online Shopping and Delivery Service</h1>
       <h2>
         Select products from your favorite stores and drag them to your cart
@@ -212,24 +216,21 @@
           Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">
           www.flaticon.com</a>
       </div>
+<?php else: ?>
+      <script>
+        function redirect() {
+          location.href = 'login.html';
+        }
+        
+        window.onload = function () {
+          setTimeout(redirect, 2000);
+        };
+      </script>
+      <p>Redirecting you to the login page shortly.</p>
+      <p>If you are not being redirected, please click here to go to login page</p>
+      <button type="button" onclick="redirect();">Go to login page</button>
+<?php endif; ?>
     </div>
   </div>  
 </body>
-<?php else: ?>
-  <script>
-    function redirect() {
-      location.href = 'login.html';
-    }
-    
-    window.onload = function () {
-      setTimeout(redirect, 2000);
-    };
-  </script>
-</head>
-<body>
-  <p>Redirecting you to the login page shortly.</p>
-  <p>If you are not being redirected, please click here to go to login page</p>
-  <button type="button" onclick="redirect();">Go to login page</button>
-</body>
-<?php endif; ?>
 </html>

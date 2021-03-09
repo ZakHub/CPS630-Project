@@ -4,6 +4,7 @@ START TRANSACTION;
 
 DROP TABLE IF EXISTS OrderedItem;
 DROP TABLE IF EXISTS OrderInfo;
+DROP TABLE IF EXISTS Review;
 DROP TABLE IF EXISTS UserInfo;
 DROP TABLE IF EXISTS Trip;
 DROP TABLE IF EXISTS Car;
@@ -42,21 +43,9 @@ CREATE TABLE Trip (
 	distance DOUBLE NOT NULL,
 	carId INT UNSIGNED,
 	price DOUBLE,
+	fulfillmentDate DATE DEFAULT NULL,
 	FOREIGN KEY (carId) REFERENCES Car(id)
 );
-
--- CREATE TABLE UserInfo (
-	-- id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-	-- firstName VARCHAR(255) NOT NULL,
-	-- lastName VARCHAR(255) NOT NULL,
-	-- phoneNumber VARCHAR(15) NOT NULL,
-	-- email VARCHAR(255) NOT NULL,
-	-- address VARCHAR(255) NOT NULL,
-	-- --cityCode INT NOT NULL, -- what is this supposed to do?
-	-- --loginId INT NOT NULL, -- not sure what this is for either
-	-- --passwrd VARCHAR(255) NOT NULL
-	-- balance DOUBLE DEFAULT 0.00
--- );
 
 CREATE TABLE UserInfo (
 	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -77,21 +66,9 @@ CREATE TABLE Review (
 	FOREIGN KEY (userId) REFERENCES UserInfo(id)
 );
 
--- CREATE TABLE OrderInfo (
-	-- id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-	-- orderDate DATE NOT NULL,
-	-- fulfilledDate DATE NOT NULL,
-	-- price DOUBLE NOT NULL,
-	-- --paymentId -- not sure what this is for
-	-- userId INT UNSIGNED,	-- add foreign key
-	-- tripId INT UNSIGNED,	-- add foreign key
-	-- flowerId INT UNSIGNED	-- add foreign key
--- );
-
 CREATE TABLE OrderInfo (
 	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 	orderDate DATE NOT NULL,
-	fulfillmentDate DATE DEFAULT NULL,
 	price DOUBLE NOT NULL,
 	userId INT UNSIGNED NOT NULL,
 	FOREIGN KEY (userId) REFERENCES UserInfo(id)

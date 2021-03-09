@@ -228,8 +228,8 @@
     
     function populateVehicles() {
       function reportError(e) {
-        alert('Failed to retrieve available cars. Additional details can be \
-          found inthe console');
+        alert('Failed to retrieve available cars. Additional details can be ' +
+          'found inthe console');
         console.error(e);
       }
       
@@ -242,8 +242,8 @@
           return;
         }
         var response = JSON.parse(this.responseText);
-        if (response.status === 'Failure') {
-          reportError(e);
+        if (response.status === 'Failed') {
+          reportError(response.error);
           return;
         }
         response = response.results;
@@ -333,13 +333,14 @@
       routeConfirmed = false;
     }
   </script>
+<?php endif; ?>
 </head>
 <body>
   <div id="outer">
     <div id="inner" class="floating">
       <!-- Navigation -->
       <?php include('navbar.php'); ?>
-      
+<?php if (isset($_SESSION['id'])): ?>
       <h1>Travel Service</h1>
       <h2>Enter your starting location and destination</h2>
       <br />
@@ -400,24 +401,21 @@
       
       <button type="button" onclick="updateRoute();">Update</button>
       <button type="button" onclick="addToCart();">Add to cart</button>
+<?php else: ?>
+      <script>
+        function redirect() {
+          location.href = 'login.html';
+        }
+
+        window.onload = function () {
+          setTimeout(redirect, 2000);
+        };
+      </script>
+      <p>Redirecting you to the login page shortly.</p>
+      <p>If you are not being redirected, please click here to go to login page</p>
+      <button type="button" onclick="redirect();">Go to login page</button>
+<?php endif; ?>
     </div>
   </div>
 </body>
-<?php else: ?>
-  <script>
-    function redirect() {
-      location.href = 'login.html';
-    }
-    
-    window.onload = function () {
-      setTimeout(redirect, 2000);
-    };
-  </script>
-</head>
-<body>
-  <p>Redirecting you to the login page shortly.</p>
-  <p>If you are not being redirected, please click here to go to login page</p>
-  <button type="button" onclick="redirect();">Go to login page</button>
-</body>
-<?php endif; ?>
 </html>

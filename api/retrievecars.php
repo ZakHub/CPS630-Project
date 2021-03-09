@@ -3,7 +3,7 @@
 /* retrieve available cars on date provided by get argument "date" */
 /* used by ServiceA.php */
 
-include('../connect.php');
+include_once('../connect.php');
 
 $cars = array('status' => 'Success', 'results' => array());
 $query = 'SELECT * FROM Car';
@@ -11,14 +11,9 @@ if (isset($_GET['date'])) {
 	$query = $query .
 	' AS c
 	WHERE c.id NOT IN (
-		SELECT carId
-		FROM Trip AS t
-		INNER JOIN OrderedItem AS oi
-		ON t.id = oi.tripId
-		INNER JOIN OrderInfo as o
-		ON oi.orderId = o.id
-		WHERE o.fulfillmentDate = ?
-	)';
+	SELECT carId
+	FROM Trip AS t
+	WHERE t.fulfillmentDate = ?)';
 }
 
 $stmt = $conn->prepare($query);

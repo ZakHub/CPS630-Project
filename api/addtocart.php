@@ -1,6 +1,6 @@
 <?php
 
-include('../cartClass.php');
+include_once('../cartClass.php');
 session_start();
 
 $cart = unserialize($_SESSION['cart']);
