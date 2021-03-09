@@ -6,6 +6,30 @@
   <?php $cart = unserialize($_SESSION['cart']); ?>
   <title>GQZ TRAVELS - Shopping Cart</title>
   <script>
+    function deleteFromCart(e) {
+      var xhttp = new XMLHttpRequest();
+      xhttp.open('GET', 'api/removefromcart.php?which='+e.dataset.which+'&index='+e.dataset.index, true);
+      xhttp.onreadystatechange = function () {
+        if (this.readyState !== 4 || this.status != 200) {
+          return;
+        }
+        console.log(this.responseText);
+        const response = JSON.parse(this.responseText);
+        if (response.status === 'Success') {
+          location.reload();
+        } else {
+          console.error(response.error);
+          alert('Failed to remove item from shopping cart. Check console for details');
+          return;
+        }
+      };
+      xhttp.timeout = 2000;
+      xhttp.ontimeout = function () {
+        alert('Failed to remove item from shopping cart. Request timed out.');
+      };
+      xhttp.send();
+    }
+    
     function checkout() {
       var xhttp = new XMLHttpRequest();
       xhttp.open('GET', 'api/checkout.php', true);
@@ -50,13 +74,13 @@
             <th>Product Description</th>
             <th>Price</th>
           </tr>
-<?php foreach ($cart->getProducts() as $product): ?>
+<?php foreach ($cart->getProducts() as $index => $product): ?>
           <tr>
-            <td><button type="button">Delete</button></td>
+            <td><button type="button" onclick="deleteFromCart(this);"
+              data-which="Product" data-index="<?= $index ?>">Delete</button></td>
             <td><?= $product->description ?></td>
             <td>$<?= number_format($product->price, 2) ?></td>
           </tr>
-          <!--<p><?php echo serialize($product); ?></p>-->
 <?php endforeach; ?>
         </table>
       </div>
@@ -72,9 +96,10 @@
             <th>Distance</th>
             <th>Price</th>
           </tr>
-<?php foreach ($cart->getTrips() as $trip): ?>
+<?php foreach ($cart->getTrips() as $index => $trip): ?>
           <tr>
-            <td><button type="button">Delete</button></td>
+            <td><button type="button" onclick="deleteFromCart(this);"
+              data-which="Trip" data-index="<?= $index ?>">Delete</button></td>
             <td><?= $trip->distance ?> Km</td>
             <td>$<?= number_format($trip->price, 2) ?></td>
           </tr>

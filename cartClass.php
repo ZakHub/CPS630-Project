@@ -46,6 +46,12 @@ class Cart
         return $this->products[$i];
     }
     
+    function deleteProduct($i)
+    {
+        unset($this->products[$i]);
+        $this->products = array_values($this->products);
+    }
+    
     function addProduct($product)
     {
         array_push($this->products, $product);
