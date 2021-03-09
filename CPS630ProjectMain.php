@@ -45,7 +45,7 @@
       <section style="max-width:600px">
         <h2>GQZ TRAVELS</h2>
         <p><i>GQZ TRAVELS is service that help customers get around the city and
-          encourages smart green trips throught ride sharing.</i></p>
+          encourages smart green trips through ride sharing. Also are green energy delivery system is second to known!</i></p>
       </section>
 
     </div>
