@@ -27,4 +27,12 @@
     </div>
   </div>
 <?php endif; ?>
+<?php if (isset($_SESSION['id'])): ?>
+  <div style="float: right; padding: 2%;">
+    <form method="GET" action="Search.php">
+      <input id="search" name="search" type="number" placeholder="Search" />
+      <input type="submit" />
+    </form>
+  </div>
+<?php endif; ?>
 </nav>
