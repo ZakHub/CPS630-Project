@@ -25,7 +25,8 @@ function signupController($scope, $http, $window)
 			return;
 		}
 		
-		$http.put('api/register.php', JSON.stringify(user)).then(function (response) {
+		$http.put('api/register.php', JSON.stringify(user))
+			.then(function (response) {
 			$window.location.href = '#!/';
 			console.log('This should redirect');
 		}, function (response) {

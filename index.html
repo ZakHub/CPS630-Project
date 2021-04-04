@@ -1,10 +1,3 @@
-<!-- Most PHP directives will need to be replaced using angular directives -->
-
-<?php
-	ob_start();
-	session_start();
-?>
-
 <!DOCTYPE html>
 
 <html lang="en" ng-app="App">
@@ -73,6 +66,8 @@
 		<script src="controllers/login.js"></script>
 		<script src="controllers/logout.js"></script>
 		<script src="controllers/reviews.js"></script>
+		<script src="controllers/services/a.js"></script>
+		<script src="controllers/services/b.js"></script>
 		
 		<script>
 			var app = angular.module('App', [ 'ngRoute', 'ngResource' ]);
@@ -92,6 +87,7 @@
 					controller: 'LogOutController'
 				}).when('/login', {
 					title: 'Log In - GQZ Travels',
+					css: 'css/login.css',
 					templateUrl: 'templates/login.html',
 					controller: 'LogInController'
 				}).when('/aboutus', {
@@ -114,6 +110,15 @@
 					css: 'css/services.css',
 					templateUrl: 'templates/services.html'/*,
 					controller: 'ServicesController'*/
+				}).when('/services/a', {
+					title: 'Travel Service - GQZ Travels',
+					templateUrl: 'templates/services/a.html',
+					controller: 'ServiceAController'
+				}).when('/services/b', {
+					title: 'Delivery Service - GQZ Travels',
+					css: 'css/services/b.css',
+					templateUrl: 'templates/services/b.html',
+					controller: 'ServiceBController'
 				}).otherwise({ redirectTo: '/' });
 			});
 			app.controller('NavController', [ '$scope', '$window',
@@ -132,6 +137,10 @@
 				logoutController ]);
 			app.controller('ReviewsController', [ '$scope', '$http',
 				reviewsController ]);
+			app.controller('ServiceAController', [ '$scope', '$http', '$window',
+				serviceAController ]);
+			app.controller('ServiceBController', [ '$scope', '$http', '$window',
+				serviceBController ]);
 			
 			app.run([ '$rootScope', function ($rootScope) {
 				$rootScope.$on('$routeChangeSuccess',

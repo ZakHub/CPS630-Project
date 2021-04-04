@@ -10,6 +10,7 @@
 		placeholder="Password" required="required" />
 
 	<input type="submit" ng-click="login(credentials)" value="Login" />
+	<p class="error" ng-if="failed">Username or password are incorrect</p>
 	<br />
 	<br />
 	<a href="#!/signup">Sign up for an account to access our services.</a>

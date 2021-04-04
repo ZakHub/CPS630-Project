@@ -1,6 +1,6 @@
 <?php
 
-include_once('connect.php');
+require_once('connect.php');
 
 $stores = array('status' => 'Success', 'results' => array());
 $query = 'SELECT * FROM Store';
