@@ -1,0 +1,9 @@
+<h1>Reviews</h1>
+<h3>Check out what our customers have to say about us</h3>
+
+<div class="review" ng-if="success && reviews.length > 0"
+	ng-repeat="review in reviews">
+	<h3>{{ review.firstInitial }}. {{ review.lastInitial }}. says:</h3>
+	<p>{{ review.feedback }}</p>
+	<br />
+</div>

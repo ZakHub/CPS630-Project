@@ -1,7 +1,7 @@
 <?php
 
 include_once('../cartClass.php');
-include_once('../connect.php');
+include_once('connect.php');
 
 session_start();
 $cart = unserialize($_SESSION['cart']);

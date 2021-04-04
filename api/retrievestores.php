@@ -1,6 +1,6 @@
 <?php
 
-include_once('../connect.php');
+include_once('connect.php');
 
 $stores = array('status' => 'Success', 'results' => array());
 $query = 'SELECT * FROM Store';
@@ -10,9 +10,9 @@ if (($result = $conn->query($query))) {
 		array_push($stores['results'], $row);
 	}
 	$result->close();
-	echo json_encode($stores);
+	respond(200, json_encode($stores));
 } else {
-	die(constructError('Failed to execute query: ' . $conn->error));
+	respond(500, constructError('Failed to execute query: ' . $conn->error));
 }
 
 $conn->close();

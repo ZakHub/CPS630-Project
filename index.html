@@ -1,11 +1,140 @@
+<!-- Most PHP directives will need to be replaced using angular directives -->
+
+<?php
+	ob_start();
+	session_start();
+?>
+
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" ng-app="App">
 	<head>
-		<script>
-			location.href = 'CPS630ProjectMain.php';
-		</script>
+		<meta charset="UTF-8" />
+		<title ng-bind="title"></title>
+		
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" href="css/common.css" />
+		<link rel="stylesheet" ng-href="{{ css }}" ng-if="css" />
+		
+		<!-- Non-minified provides useful debugging information -->
+		<!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-resource.min.js"></script>-->
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-resource.js"></script>
 	</head>
-	<body></body>
+	<body>
+		<div id="outer">
+			<div id="inner" class="floating">
+				<!-- Module containing a common nav bar -->
+				<nav class="nav">
+					<img src="resources/Logo2.png" width="80" height="100"
+						class="d-inline-block align-top" alt="logo"/>
+					<a href="#!/">Home</a>
+<?php if (!isset($_SESSION['id'])): ?>
+					<a href="#!/signup">Sign Up</a>
+<?php endif; ?>
+<?php if (isset($_SESSION['username'])): ?>
+					<a href="#!/logout">Log Out</a>
+<?php else: ?>
+					<a href="#!/login">Log In</a>
+<?php endif; ?>
+					<a href="#!/aboutus">About Us</a>
+					<a href="#!/contactus">Contact Us</a>
+					<a href="#!/reviews">Reviews</a>
+					<a href="#!/shoppingcart">Shopping Cart</a>
+					<a href="#!/services">Types of Services</a>
+<?php if (isset($_SESSION['id']) && $_SESSION['id'] == 1): ?>
+					<div class="dropdown">
+						<button class="dropbtn">db Maintain</button>
+						<div class="dropdown-content">
+							<a href="insert.php" target="_blank">Insert</a>
+							<a href="delete.php" target="_blank">Delete</a>
+							<a href="update.php" target="_blank">Update</a>
+							<a href="select.php" target="_blank">Select</a>
+						</div>
+					</div>
+<?php endif; ?>
+<?php if (isset($_SESSION['id'])): ?>
+					<div style="float: right; padding: 2%;">
+						<form method="GET" action="Search.php">
+							<input id="search" name="search" type="number" placeholder="Search" />
+							<input type="submit" />
+						</form>
+					</div>
+<?php endif; ?>
+				</nav>
+
+				<div id="content" ng-view></div>
+			</div>
+		</div>
+		
+		<!-- preload all pages -->
+		<!--<script id="templates/home.html" type="text/ng-template"
+			src="templates/home.html"></script>
+		<script id="templates/aboutus.html" type="text/ng-template"
+			src="templates/aboutus.html"></script>-->
+		
+		<!-- load controllers -->
+		<script src="controllers/home.js"></script>
+		<script src="controllers/signup.js"></script>
+		<script src="controllers/reviews.js"></script>
+		
+		<script>
+			var app = angular.module('App', [ 'ngRoute', 'ngResource' ]);
+			app.config(function ($routeProvider) {
+				$routeProvider.when('/', {
+					title: 'GQZ Travels',
+					templateUrl: 'templates/home.html',
+					controller: 'HomeController'
+				}).when('/signup', {
+					title: 'Sign Up - GQZ Travels',
+					css: 'css/signup.css',
+					templateUrl: 'templates/signup.html',
+					controller: 'SignUpController'
+				}).when('/logout', {
+					templateUrl: 'templates/logout.html'/*,
+					controller: 'LogOutController'*/
+				}).when('/login', {
+					templateUrl: 'templates/login.html',
+					controller: 'LogInController'
+				}).when('/aboutus', {
+					title: 'About Us - GQZ Travels',
+					templateUrl: 'templates/aboutus.html'/*,
+					controller: 'AboutusController'*/
+				}).when('/contactus', {
+					title: 'Contact Us - GQZ Travels',
+					templateUrl: 'templates/contactus.html'/*,
+					controller: 'ContactUsController'*/
+				}).when('/reviews', {
+					title: 'Reviews - GQZ Travels',
+					templateUrl: 'templates/reviews.html',
+					controller: 'ReviewsController'
+				}).when('/shoppingcart', {
+					templateUrl: 'templates/shoppingcart.html'/*,
+					controller: 'ShoppingCartController'*/
+				}).when('/services', {
+					title: 'Services - GQZ Travels',
+					css: 'css/services.css',
+					templateUrl: 'templates/services.html'/*,
+					controller: 'ServicesController'*/
+				}).otherwise({ redirectTo: '/' });
+			});
+			app.controller('HomeController', [ '$scope', '$interval',
+				homeController ]);
+			app.controller('ReviewsController', [ '$scope', '$http',
+				reviewsController ]);
+			app.controller('SignUpController', [ '$scope', '$http', '$window',
+				signupController ]);
+			
+			app.run([ '$location', '$rootScope', function ($location, $rootScope) {
+				$rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
+					$rootScope.title = current.$$route.title;
+					$rootScope.css = current.$$route.css;
+				});
+			} ]);
+    </script>
+	</body>
 </html>
 

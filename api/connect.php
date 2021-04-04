@@ -1,8 +1,23 @@
 <?php
 /* Connects to MySQL Database */
 
-function constructError($e) {
+function constructError($e)
+{
     return json_encode(array('status' => 'Failed', 'error' => '"' . $e . '"'));
+}
+
+function respond($response_code, $payload)
+{
+    http_response_code($response_code);
+    header('Content-Type: appliction/json; charset=UTF-8');
+    if (400 <= $response_code && $response_code < 600) {
+        if (isset($conn)) {
+            $conn->close();
+        }
+        die($payload);
+    } else {
+        echo $payload;
+    }
 }
 
 // Login Credentials
