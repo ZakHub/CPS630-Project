@@ -1,1 +1,42 @@
+<h1>Shopping Cart</h1>
 
+<p ng-if="!cart.products.length && !cart.trips.length">Your cart is empty</p>
+
+<div ng-if="cart.products.length">
+	<br />
+	<h2>Products</h2>
+	<table>
+		<tr>
+			<th>Delete</th>
+			<th>Product Description</th>
+			<th>Price</th>
+		</tr>
+		<tr ng-repeat="product in cart.products">
+			<td><button type="button" ng-click="delete('products', product)">Delete</button></td>
+			<td>{{ product.description }}</td>
+			<td>${{ product.price.toFixed(2) }}</td>
+		</tr>
+	</table>
+</div>
+
+<div ng-if="cart.trips.length">
+	<br />
+	<h2>Trips</h2>
+	<table>
+		<tr>
+			<th>Delete</th>
+            <th>Distance</th>
+            <th>Price</th>
+		</tr>
+		<tr ng-repeat="trip in cart.trips">
+			<td><button type="button" ng-click="delete('trips', trip)">Delete</button></td>
+			<td>{{ trip.distance }}</td>
+			<td>${{ trip.price.toFixed(2) }} Km</td>
+		</tr>
+	</table>
+</div>
+
+<div ng-if="cart.products.length || cart.trips.length">
+	<p><strong>Total:</strong> ${{ total() }}</p>
+	<button type="button" ng-click="checkout()">Check Out</button>
+</div>
