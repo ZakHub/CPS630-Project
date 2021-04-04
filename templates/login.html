@@ -2,14 +2,14 @@
 <hr />
 <form>
 	<label for="username"><b>Username</b></label>
-	<input id="username" type="text" placeholder="Username"
-		required="required" />
+	<input id="username" type="text" ng-model="credentials.username"
+		placeholder="Username" required="required" />
 
 	<label for="password"><b>Password</b></label>
-	<input id="password" type="password" placeholder="Password"
-		required="required" />
+	<input id="password" type="password" ng-model="credentials.password"
+		placeholder="Password" required="required" />
 
-	<input type="submit" ng-click="authenticate(user)" value="Login" />
+	<input type="submit" ng-click="login(credentials)" value="Login" />
 	<br />
 	<br />
 	<a href="#!/signup">Sign up for an account to access our services.</a>

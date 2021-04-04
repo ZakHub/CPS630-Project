@@ -28,25 +28,19 @@
 		<div id="outer">
 			<div id="inner" class="floating">
 				<!-- Module containing a common nav bar -->
-				<nav class="nav">
+				<nav class="nav" ng-controller="NavController">
 					<img src="resources/Logo2.png" width="80" height="100"
 						class="d-inline-block align-top" alt="logo"/>
 					<a href="#!/">Home</a>
-<?php if (!isset($_SESSION['id'])): ?>
-					<a href="#!/signup">Sign Up</a>
-<?php endif; ?>
-<?php if (isset($_SESSION['username'])): ?>
-					<a href="#!/logout">Log Out</a>
-<?php else: ?>
-					<a href="#!/login">Log In</a>
-<?php endif; ?>
+					<a href="#!/signup" ng-if="!currentUser()">Sign Up</a>
+					<a href="#!/login" ng-if="!currentUser()">Log In</a>
+					<a href="#!/logout" ng-if="currentUser()">Log Out</a>
 					<a href="#!/aboutus">About Us</a>
 					<a href="#!/contactus">Contact Us</a>
 					<a href="#!/reviews">Reviews</a>
 					<a href="#!/shoppingcart">Shopping Cart</a>
 					<a href="#!/services">Types of Services</a>
-<?php if (isset($_SESSION['id']) && $_SESSION['id'] == 1): ?>
-					<div class="dropdown">
+					<div class="dropdown" ng-if="currentUser().id === 1">
 						<button class="dropbtn">db Maintain</button>
 						<div class="dropdown-content">
 							<a href="insert.php" target="_blank">Insert</a>
@@ -55,15 +49,12 @@
 							<a href="select.php" target="_blank">Select</a>
 						</div>
 					</div>
-<?php endif; ?>
-<?php if (isset($_SESSION['id'])): ?>
-					<div style="float: right; padding: 2%;">
+					<div style="float: right; padding: 2%;" ng-if="currentUser()">
 						<form method="GET" action="Search.php">
 							<input id="search" name="search" type="number" placeholder="Search" />
 							<input type="submit" />
 						</form>
 					</div>
-<?php endif; ?>
 				</nav>
 
 				<div id="content" ng-view></div>
@@ -79,6 +70,8 @@
 		<!-- load controllers -->
 		<script src="controllers/home.js"></script>
 		<script src="controllers/signup.js"></script>
+		<script src="controllers/login.js"></script>
+		<script src="controllers/logout.js"></script>
 		<script src="controllers/reviews.js"></script>
 		
 		<script>
@@ -94,9 +87,11 @@
 					templateUrl: 'templates/signup.html',
 					controller: 'SignUpController'
 				}).when('/logout', {
-					templateUrl: 'templates/logout.html'/*,
-					controller: 'LogOutController'*/
+					title: 'Logged Out - GQZ Travels',
+					templateUrl: 'templates/logout.html',
+					controller: 'LogOutController'
 				}).when('/login', {
+					title: 'Log In - GQZ Travels',
 					templateUrl: 'templates/login.html',
 					controller: 'LogInController'
 				}).when('/aboutus', {
@@ -121,15 +116,26 @@
 					controller: 'ServicesController'*/
 				}).otherwise({ redirectTo: '/' });
 			});
+			app.controller('NavController', [ '$scope', '$window',
+				function ($scope, $window) {
+				$scope.currentUser = function () {
+					return $window.sessionStorage['user'];
+				};
+			} ]);
 			app.controller('HomeController', [ '$scope', '$interval',
 				homeController ]);
-			app.controller('ReviewsController', [ '$scope', '$http',
-				reviewsController ]);
 			app.controller('SignUpController', [ '$scope', '$http', '$window',
 				signupController ]);
+			app.controller('LogInController', [ '$scope', '$http', '$window',
+				loginController ]);
+			app.controller('LogOutController', [ '$scope', '$window',
+				logoutController ]);
+			app.controller('ReviewsController', [ '$scope', '$http',
+				reviewsController ]);
 			
-			app.run([ '$location', '$rootScope', function ($location, $rootScope) {
-				$rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
+			app.run([ '$rootScope', function ($rootScope) {
+				$rootScope.$on('$routeChangeSuccess',
+					function (event, current, previous) {
 					$rootScope.title = current.$$route.title;
 					$rootScope.css = current.$$route.css;
 				});
