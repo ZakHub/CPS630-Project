@@ -25,14 +25,14 @@
 					<img src="resources/Logo2.png" width="80" height="100"
 						class="d-inline-block align-top" alt="logo"/>
 					<a href="#!/">Home</a>
-					<a href="#!/signup" ng-if="!currentUser()">Sign Up</a>
-					<a href="#!/login" ng-if="!currentUser()">Log In</a>
 					<a href="#!/logout" ng-if="currentUser()">Log Out</a>
+					<a href="#!/login" ng-if="!currentUser()">Log In</a>
+					<a href="#!/signup" ng-if="!currentUser()">Sign Up</a>
 					<a href="#!/aboutus">About Us</a>
 					<a href="#!/contactus">Contact Us</a>
 					<a href="#!/reviews">Reviews</a>
-					<a href="#!/shoppingcart">Shopping Cart</a>
-					<a href="#!/services">Types of Services</a>
+					<a href="#!/cart" ng-if="currentUser()">Shopping Cart</a>
+					<a href="#!/services">Services</a>
 					<div class="dropdown" ng-if="currentUser().id === 1">
 						<button class="dropbtn">db Maintain</button>
 						<div class="dropdown-content">
@@ -50,7 +50,7 @@
 					</div>
 				</nav>
 
-				<div id="content" ng-view></div>
+				<main id="content" ng-view></main>
 			</div>
 		</div>
 		
@@ -66,6 +66,7 @@
 		<script src="controllers/login.js"></script>
 		<script src="controllers/logout.js"></script>
 		<script src="controllers/reviews.js"></script>
+		<script src="controllers/cart.js"></script>
 		<script src="controllers/services/a.js"></script>
 		<script src="controllers/services/b.js"></script>
 		
@@ -102,9 +103,9 @@
 					title: 'Reviews - GQZ Travels',
 					templateUrl: 'templates/reviews.html',
 					controller: 'ReviewsController'
-				}).when('/shoppingcart', {
-					templateUrl: 'templates/shoppingcart.html'/*,
-					controller: 'ShoppingCartController'*/
+				}).when('/cart', {
+					templateUrl: 'templates/cart.html',
+					controller: 'CartController'
 				}).when('/services', {
 					title: 'Services - GQZ Travels',
 					css: 'css/services.css',
@@ -132,11 +133,12 @@
 			app.controller('SignUpController', [ '$scope', '$http', '$window',
 				signupController ]);
 			app.controller('LogInController', [ '$scope', '$http', '$window',
-				loginController ]);
+				'$location', loginController ]);
 			app.controller('LogOutController', [ '$scope', '$window', '$timeout',
 				logoutController ]);
 			app.controller('ReviewsController', [ '$scope', '$http',
 				reviewsController ]);
+			app.controller('CartController', [ '$scope', '$window', cartController ]);
 			app.controller('ServiceAController', [ '$scope', '$http', '$window',
 				serviceAController ]);
 			app.controller('ServiceBController', [ '$scope', '$http', '$window',

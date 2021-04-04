@@ -1,7 +1,18 @@
 function serviceBController($scope, $http, $window)
 {
 	if (!$window.sessionStorage['user']) {
-		$window.location.href = '#!/login';
+		$window.location.href = '#!/login?from=services/b';
+	}
+	
+	function addToCart(product)
+	{
+		var cart = JSON.parse($window.sessionStorage['cart']);
+		cart.products.push(product);
+		$window.sessionStorage['cart'] = JSON.stringify(cart);
+		console.log($window.sessionStorage);
+		if (confirm('Success. Go to cart?')) {
+			$window.location.href = '#!/cart'
+		}
 	}
 	
 	$scope.drag = function (event) {
@@ -15,7 +26,7 @@ function serviceBController($scope, $http, $window)
 	$scope.drop = function (event) {
 		event.preventDefault();
 		var productJSON = event.dataTransfer.getData('text');
-		console.log(productJSON);
+		addToCart(JSON.parse(productJSON));
 	};
 	
 	$http.get('api/retrievestoreproducts.php').then(function (response) {
