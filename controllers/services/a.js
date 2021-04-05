@@ -1,26 +1,37 @@
-function serviceAController($scope, $http, $window)
+function serviceAController($scope, $http, $window, leafletData)
 {
 	if (!$window.sessionStorage['user']) {
 		$window.location.href = '#!/login?from=services/a';
 	}
 	
+	const OSM = 'https://nominatim.openstreetmap.org';
+	var route = null;
+	
+	$scope.routeConfirmed = false;
 	$scope.cars = [];
-	$scope.order = {
-		fromStreet: '',
-		fromCity: '',
-		fromProvince: '',
-		fromCountry: '',
-		
-		toStreet: '',
-		toCity: '',
-		toProvince: '',
-		toCountry: '',
-		
-		date: '',
-		carId: 0
+	
+	$scope.trip = {
+		fromAddr: {
+			street: '',
+			city: '',
+			province: '',
+			country: ''
+		},
+		fromPos: null,
+		toAddr: {
+			street: '',
+			city: '',
+			province: '',
+			country: ''
+		},
+		toPos: null,
+		date: null,
+		car: null,
+		distance: null,
+		cost: null
 	};
 	
-	$scope.position = {
+	$scope.startPosition = {
 		lat: 0,
 		lng: 0,
 		zoom: 12
@@ -30,23 +41,23 @@ function serviceAController($scope, $http, $window)
 		navigator.geolocation.getCurrentPosition(function (pos) {
 			$scope.$apply(function () {
 				//console.log(pos);
-				$scope.position.lat = pos.coords.latitude;
-				$scope.position.lng = pos.coords.longitude;
+				$scope.startPosition.lat = pos.coords.latitude;
+				$scope.startPosition.lng = pos.coords.longitude;
 				
-				$http.get('https://nominatim.openstreetmap.org/reverse?lat=' +
-					$scope.position.lat + '&lon=' + $scope.position.lng +
-					'&format=json').then(function (response) {
+				$http.get(OSM + '/reverse?format=json&lat=' +
+					$scope.startPosition.lat + '&lon=' +
+					$scope.startPosition.lng).then(function (response) {
 					const result = response.data;
 					const address = result.address;
 					
-					$scope.order.fromStreet = address.house_number + ' ' +
+					$scope.trip.fromAddr.street = address.house_number + ' ' +
 						address.road;
-					$scope.order.fromCity = address.city;
-					$scope.order.fromProvince = address.state;
-					$scope.order.fromCountry = address.country;
+					$scope.trip.fromAddr.city = address.city;
+					$scope.trip.fromAddr.province = address.state;
+					$scope.trip.fromAddr.country = address.country;
 					
-					$scope.order.toProvince = address.state;
-					$scope.order.toCountry = address.country;
+					$scope.trip.toAddr.province = address.state;
+					$scope.trip.toAddr.country = address.country;
 				}, function (response) {
 					console.warn('Failed to lookup current address');
 				});
@@ -56,14 +67,13 @@ function serviceAController($scope, $http, $window)
 		console.warn('geolocation is not supported');
 	}
 	
-	$scope.populateVehicles = function (order) {
-		if (!order.date) {
+	$scope.populateVehicles = function () {
+		if (!$scope.trip.date) {
 			return;
 		}
-		$http.get('api/retrievecars.php?date=' + order.date)
+		$http.get('api/retrievecars.php?date=' + $scope.trip.date)
 			.then(function (response) {
 			$scope.cars = response.data.results;
-			console.log($scope.cars);
 		}, function (response) {
 			alert('Failed to retrieve list of available vehicles. ' +
 				'Try refreshing the page');
@@ -71,49 +81,122 @@ function serviceAController($scope, $http, $window)
 		});
 	};
 	
-	$scope.updateRoute = function () {
-		const suffixes = [ 'Street', 'City', 'Province', 'Country' ];
+	$scope.updateRoute = async function () {
+		const addressFields = [ 'street', 'city', 'province', 'country' ];
 		
-		function verifyAddress(prefix)
+		function verifyAddress(addr)
 		{
-			for (var suffix of suffixes) {
-				if (!$scope.order[prefix + suffix]) {
+			for (var field of addressFields) {
+				if (!addr[field]) {
 					return false;
 				}
 			}
 			return true;
 		}
 		
-		function constructAddress(prefix)
+		function constructAddress(addr)
 		{
-			if (!verifyAddress(prefix)) {
+			if (!verifyAddress(addr)) {
 				return null;
 			}
 			var address = '';
-			for (var i = 0; i < suffixes.length; i++) {
+			for (var i = 0; i < addressFields.length; i++) {
 				if (i) {
 					address += ', ';
 				}
-				address += $scope.order[prefix + suffixes[i]];
+				address += addr[addressFields[i]];
 			}
 			
 			return address;
 		}
 		
-		const from = constructAddress('from');
-		const to = constructAddress('to');
+		const fromAddress = constructAddress($scope.trip.fromAddr);
+		const toAddress = constructAddress($scope.trip.toAddr);
 		
-		if (!from) {
+		if (!fromAddress) {
 			alert('Starting address is not correctly populated');
 			return;
 		}
-		if (!to) {
+		if (!toAddress) {
 			alert('Destination address is not correctly populated');
 			return;
 		}
 		
 		// lookup lat/long for each address
-		// construct route or update existing route
+		var fromResponsePromise = $http.get(OSM + '/search?format=json&q=' +
+			fromAddress);
+		var toResponsePromise = $http.get(OSM + '/search?format=json&q=' +
+			toAddress);
+			
+			
+		const fromResponse = await fromResponsePromise;
+		if (fromResponse.status !== 200 || !fromResponse.data.length) {
+			alert('Failed to lookup starting position');
+			console.warn(fromResponse.data);
+			return;
+		}
+		$scope.trip.fromPos = {
+			lat: parseFloat(fromResponse.data[0].lat),
+			lng: parseFloat(fromResponse.data[0].lon)
+		};
 		
+		const toResponse = await toResponsePromise;
+		if (toResponse.status !== 200 || !toResponse.data.length) {
+			alert('Failed to lookup destination position');
+			console.warn(toResponse.data);
+			return;
+		}
+		$scope.trip.toPos = {
+			lat: parseFloat(toResponse.data[0].lat),
+			lng: parseFloat(toResponse.data[0].lon)
+		};
+		
+		// update map center
+		/*$scope.$apply(function () {
+			$scope.position.lat = fromPosition.lat;
+			$scope.position.lng = fromPosition.lng;
+		});*/
+		
+		// construct route or update existing route
+		leafletData.getMap().then(function (map) {
+			map.fitBounds([$scope.trip.fromPos, $scope.trip.toPos]);
+			if (!route) {
+				route = L.Routing.control({
+					waypoints: [ $scope.trip.fromPos, $scope.trip.toPos ],
+					show: false
+				}).on('routesfound', function (e) {
+					const routes = e.routes;
+					$scope.trip.distance = routes[0].summary.totalDistance / 1000;
+					if ($scope.trip.distance > 50) {
+						alert('Requested route exceeds transport limit of 50Km.');
+						$scope.routeConfirmed = false;
+					} else {
+						$scope.routeConfirmed = true;
+					}
+				}).on('routeselected', function (e) {
+					$scope.updateCost();
+				});
+				route.addTo(map);
+			} else {
+				route.setWaypoints([ fromPosition, toPosition ]);
+			}
+		});
+	};
+	
+	$scope.updateCost = function () {
+		if (!$scope.routeConfirmed || !$scope.trip.car) {
+			return;
+		}
+		
+		$scope.trip.cost = $scope.trip.distance * $scope.trip.car.rate;
+	};
+	
+	$scope.addToCart = function () {
+		console.log('addToCart called');
+		console.log($scope.trip);
+		
+		var cart = JSON.parse($window.sessionStorage['cart']);
+		cart.trips.push($scope.trip);
+		$window.sessionStorage['cart'] = JSON.stringify(cart);
 	};
 }

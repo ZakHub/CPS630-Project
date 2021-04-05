@@ -156,7 +156,7 @@
 				reviewsController ]);
 			app.controller('CartController', [ '$scope', '$window', cartController ]);
 			app.controller('ServiceAController', [ '$scope', '$http', '$window',
-				serviceAController ]);
+				'leafletData', serviceAController ]);
 			app.controller('ServiceBController', [ '$scope', '$http', '$window',
 				serviceBController ]);
 			
