@@ -8,14 +8,28 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="stylesheet" href="css/common.css" />
 		<link rel="stylesheet" ng-href="{{ css }}" ng-if="css" />
-		
+
 		<!-- Non-minified provides useful debugging information -->
 		<!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.min.js"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-resource.min.js"></script>-->
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-resource.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-leaflet-directive/0.10.0/angular-leaflet-directive.min.js"></script>-->
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-resource.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-leaflet-directive/0.10.0/angular-leaflet-directive.js"></script>
+		
+		<!-- Leaflet files -->
+		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+			integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+			crossorigin=""/>
+		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+			integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+			crossorigin=""></script>
+		
+		<!-- Leaflet Routing Machine files -->
+		<link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+		<script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
 	</head>
 	<body>
 		<div id="outer">
@@ -71,7 +85,7 @@
 		<script src="controllers/services/b.js"></script>
 		
 		<script>
-			var app = angular.module('App', [ 'ngRoute', 'ngResource' ]);
+			var app = angular.module('App', [ 'ngRoute', 'ngResource', 'leaflet-directive' ]);
 			app.config(function ($routeProvider) {
 				$routeProvider.when('/', {
 					title: 'GQZ Travels',
@@ -114,6 +128,7 @@
 					controller: 'ServicesController'*/
 				}).when('/services/a', {
 					title: 'Travel Service - GQZ Travels',
+					css: 'css/services/a.css',
 					templateUrl: 'templates/services/a.html',
 					controller: 'ServiceAController'
 				}).when('/services/b', {
