@@ -10,9 +10,9 @@ function serviceBController($scope, $http, $window)
 		cart.products.push(product);
 		$window.sessionStorage['cart'] = JSON.stringify(cart);
 		console.log($window.sessionStorage);
-		if (confirm('Success. Go to cart?')) {
+		/*if (confirm('Success. Go to cart?')) {
 			$window.location.href = '#!/cart'
-		}
+		}*/
 	}
 	
 	$scope.drag = function (event) {

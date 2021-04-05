@@ -16,6 +16,6 @@ function cartController($scope, $window)
 	
 	$scope.total = function () {
 		return $scope.cart.products.map(p => p.price).reduce((a, b) => a + b, 0)
-			+ $scope.cart.trips.map(t => t.price).reduce((a, b) => a + b, 0);
+			+ $scope.cart.trips.map(t => t.cost).reduce((a, b) => a + b, 0);
 	};
 }

@@ -7,6 +7,8 @@ function serviceAController($scope, $http, $window, leafletData)
 	const OSM = 'https://nominatim.openstreetmap.org';
 	var route = null;
 	
+	$scope.date = new Date();
+	console.log($scope.date);
 	$scope.routeConfirmed = false;
 	$scope.cars = [];
 	
@@ -192,8 +194,8 @@ function serviceAController($scope, $http, $window, leafletData)
 	};
 	
 	$scope.addToCart = function () {
-		console.log('addToCart called');
-		console.log($scope.trip);
+		//console.log('addToCart called');
+		//console.log($scope.trip);
 		
 		var cart = JSON.parse($window.sessionStorage['cart']);
 		cart.trips.push($scope.trip);

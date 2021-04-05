@@ -49,6 +49,7 @@
 	<br />
 	<label for="fulfillment-date"><strong>Fulfillment Date: </strong></label>
 	<input id="fulfillment-date" type="date" ng-model="trip.date"
+		min="{{ date | date: 'yyyy-MM-dd' }}"
 		ng-change="populateVehicles(order)" />
 	<h3>Available Vehicles</h3>
 	<p>Select a date to list available vehicles</p>
@@ -70,7 +71,9 @@
 	
 	<div>
 		<strong>Distance: </strong>
-		<p class="number" ng-if="trip.distance">{{ trip.distance }} Km</p>
+		<p class="number" ng-if="trip.distance">
+			{{ trip.distance.toFixed(2) }} Km
+		</p>
 		<br />
 		<strong>Total: </strong>
 		<p class="number" ng-if="trip.cost">${{ trip.cost.toFixed(2) }}</p>
