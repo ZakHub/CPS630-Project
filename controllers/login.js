@@ -11,10 +11,11 @@ function loginController($scope, $http, $window, $location)
 				from = '';
 			}
 			const user = response.data.results;
-			const cart = {
+			/*const cart = {
 				trips: [],
 				products: []
-			};
+			};*/
+			const cart = new Cart();
 			if (user) {
 				$window.sessionStorage.setItem('user', JSON.stringify(user));
 				$window.sessionStorage.setItem('cart', JSON.stringify(cart));

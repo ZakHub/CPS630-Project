@@ -58,7 +58,8 @@
 					</div>
 					<div style="float: right; padding: 2%;" ng-if="currentUser()">
 						<form method="GET" action="Search.php">
-							<input id="search" name="search" type="number" placeholder="Search" />
+							<input id="search" name="search" type="number"
+								placeholder="Search" />
 							<input type="submit" />
 						</form>
 					</div>
@@ -74,6 +75,13 @@
 		<script id="templates/aboutus.html" type="text/ng-template"
 			src="templates/aboutus.html"></script>-->
 		
+		<!-- load models -->
+		<script src="models/Address.js"></script>
+		<script src="models/Cart.js"></script>
+		<script src="models/LatLng.js"></script>
+		<script src="models/LeafletCenter.js"></script>
+		<script src="models/Trip.js"></script>
+		
 		<!-- load controllers -->
 		<script src="controllers/home.js"></script>
 		<script src="controllers/signup.js"></script>
@@ -81,11 +89,13 @@
 		<script src="controllers/logout.js"></script>
 		<script src="controllers/reviews.js"></script>
 		<script src="controllers/cart.js"></script>
+		<script src="controllers/checkedout.js"></script>
 		<script src="controllers/services/a.js"></script>
 		<script src="controllers/services/b.js"></script>
 		
 		<script>
-			var app = angular.module('App', [ 'ngRoute', 'ngResource', 'leaflet-directive' ]);
+			var app = angular.module('App', [ 'ngRoute', 'ngResource',
+				'leaflet-directive' ]);
 			app.config(function ($routeProvider) {
 				$routeProvider.when('/', {
 					title: 'GQZ Travels',
@@ -122,6 +132,11 @@
 					css: 'css/cart.css',
 					templateUrl: 'templates/cart.html',
 					controller: 'CartController'
+				}).when('/checkedout', {
+					title: 'Order Placed - GQZ Travels',
+					css: 'css/checkedout.css',
+					templateUrl: 'templates/checkedout.html',
+					controller: 'CheckedOutController'
 				}).when('/services', {
 					title: 'Services - GQZ Travels',
 					css: 'css/services.css',
@@ -151,13 +166,16 @@
 				signupController ]);
 			app.controller('LogInController', [ '$scope', '$http', '$window',
 				'$location', loginController ]);
-			app.controller('LogOutController', [ '$scope', '$window', '$timeout',
+			app.controller('LogOutController', [ '$scope', '$window',
 				logoutController ]);
 			app.controller('ReviewsController', [ '$scope', '$http',
 				reviewsController ]);
-			app.controller('CartController', [ '$scope', '$window', cartController ]);
+			app.controller('CartController', [ '$scope', '$http', '$window',
+				cartController ]);
+			app.controller('CheckedOutController', [ '$scope', '$http', '$window',
+				'$location', checkedOutController ]);
 			app.controller('ServiceAController', [ '$scope', '$http', '$window',
-				'leafletData', serviceAController ]);
+				'$filter', 'leafletData', serviceAController ]);
 			app.controller('ServiceBController', [ '$scope', '$http', '$window',
 				serviceBController ]);
 			

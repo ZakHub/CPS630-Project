@@ -1,4 +1,4 @@
-function serviceAController($scope, $http, $window, leafletData)
+function serviceAController($scope, $http, $window, $filter, leafletData)
 {
 	if (!$window.sessionStorage['user']) {
 		$window.location.href = '#!/login?from=services/a';
@@ -8,43 +8,18 @@ function serviceAController($scope, $http, $window, leafletData)
 	var route = null;
 	
 	$scope.date = new Date();
-	console.log($scope.date);
 	$scope.routeConfirmed = false;
 	$scope.cars = [];
 	
-	$scope.trip = {
-		fromAddr: {
-			street: '',
-			city: '',
-			province: '',
-			country: ''
-		},
-		fromPos: null,
-		toAddr: {
-			street: '',
-			city: '',
-			province: '',
-			country: ''
-		},
-		toPos: null,
-		date: null,
-		car: null,
-		distance: null,
-		cost: null
-	};
-	
-	$scope.startPosition = {
-		lat: 0,
-		lng: 0,
-		zoom: 12
-	};
+	$scope.trip = new Trip();
+	$scope.startPosition = new LeafletCenter(0, 0, 12);
 	
 	if (navigator.geolocation) {
 		navigator.geolocation.getCurrentPosition(function (pos) {
 			$scope.$apply(function () {
 				//console.log(pos);
-				$scope.startPosition.lat = pos.coords.latitude;
-				$scope.startPosition.lng = pos.coords.longitude;
+				$scope.startPosition.setPosition(pos.coords.latitude,
+					pos.coords.longitude);
 				
 				$http.get(OSM + '/reverse?format=json&lat=' +
 					$scope.startPosition.lat + '&lon=' +
@@ -69,6 +44,10 @@ function serviceAController($scope, $http, $window, leafletData)
 		console.warn('geolocation is not supported');
 	}
 	
+	/*$scope.$watch('trip.date', function (newDate) {
+		$scope.trip.date = $filter('date')(newDate, 'yyyy-MM-dd');
+	});*/
+	
 	$scope.populateVehicles = function () {
 		if (!$scope.trip.date) {
 			return;
@@ -84,36 +63,8 @@ function serviceAController($scope, $http, $window, leafletData)
 	};
 	
 	$scope.updateRoute = async function () {
-		const addressFields = [ 'street', 'city', 'province', 'country' ];
-		
-		function verifyAddress(addr)
-		{
-			for (var field of addressFields) {
-				if (!addr[field]) {
-					return false;
-				}
-			}
-			return true;
-		}
-		
-		function constructAddress(addr)
-		{
-			if (!verifyAddress(addr)) {
-				return null;
-			}
-			var address = '';
-			for (var i = 0; i < addressFields.length; i++) {
-				if (i) {
-					address += ', ';
-				}
-				address += addr[addressFields[i]];
-			}
-			
-			return address;
-		}
-		
-		const fromAddress = constructAddress($scope.trip.fromAddr);
-		const toAddress = constructAddress($scope.trip.toAddr);
+		const fromAddress = $scope.trip.fromAddr.construct();
+		const toAddress = $scope.trip.toAddr.construct();
 		
 		if (!fromAddress) {
 			alert('Starting address is not correctly populated');
@@ -137,10 +88,8 @@ function serviceAController($scope, $http, $window, leafletData)
 			console.warn(fromResponse.data);
 			return;
 		}
-		$scope.trip.fromPos = {
-			lat: parseFloat(fromResponse.data[0].lat),
-			lng: parseFloat(fromResponse.data[0].lon)
-		};
+		$scope.trip.fromPos = new LatLng(parseFloat(fromResponse.data[0].lat),
+			parseFloat(fromResponse.data[0].lon));
 		
 		const toResponse = await toResponsePromise;
 		if (toResponse.status !== 200 || !toResponse.data.length) {
@@ -148,10 +97,8 @@ function serviceAController($scope, $http, $window, leafletData)
 			console.warn(toResponse.data);
 			return;
 		}
-		$scope.trip.toPos = {
-			lat: parseFloat(toResponse.data[0].lat),
-			lng: parseFloat(toResponse.data[0].lon)
-		};
+		$scope.trip.toPos = new LatLng(parseFloat(toResponse.data[0].lat),
+			parseFloat(toResponse.data[0].lon));
 		
 		// update map center
 		/*$scope.$apply(function () {
@@ -194,9 +141,6 @@ function serviceAController($scope, $http, $window, leafletData)
 	};
 	
 	$scope.addToCart = function () {
-		//console.log('addToCart called');
-		//console.log($scope.trip);
-		
 		var cart = JSON.parse($window.sessionStorage['cart']);
 		cart.trips.push($scope.trip);
 		$window.sessionStorage['cart'] = JSON.stringify(cart);

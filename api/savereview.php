@@ -1,20 +1,20 @@
 <?php
 
-session_start();
-include_once('connect.php');
-mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+require_once('connect.php');
+
+$query = 'INSERT INTO Review (feedback, userId) VALUE (?, ?)';
 
 try {
-  $review = file_get_contents('php://input');
-  $stmt = $conn->prepare('INSERT INTO Review (feedback, userId) VALUE (?, ?)');
-  $stmt->bind_param('si', $review, $_SESSION['id']);
-  $stmt->execute();
-  $stmt->close();
-  respond(200, json_encode(array('status' => 'Success')));
+    $review = json_decode(file_get_contents('php://input'));
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param('si', $review->content, $review->userId);
+    $stmt->execute();
+    $stmt->close();
+    $conn->close();
+    respond(200, json_encode(array('status' => 'Success')));
 } catch (mysqli_sql_exception $e) {
-  respond(500, constructError($e));
+    respond(500, constructError($e));
 }
 
-$conn->close();
 
 ?>

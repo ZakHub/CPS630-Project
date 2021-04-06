@@ -10,16 +10,17 @@ $query =
     'ON ui.id = r.userId';
 
 $reviews = array('status' => 'Success', 'results' => array());
-if ($result = $conn->query($query)) {
+try {
+    $result = $conn->query($query);
     while ($review = $result->fetch_assoc()) {
-	array_push($reviews['results'], $review);
+        array_push($reviews['results'], $review);
     }
 
     respond(200, json_encode($reviews));
 
     $result->close();
-} else {
-    respond(500, constructError($conn->error));
+} catch (mysqli_sql_exception $e) {
+    respond(500, constructError($e));
 }
 
 $conn->close();

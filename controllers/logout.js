@@ -1,8 +1,6 @@
-function logoutController($scope, $window, $timeout)
+function logoutController($scope, $window)
 {
 	$window.sessionStorage.removeItem('user');
 	$window.sessionStorage.removeItem('cart');
-	$timeout(function () {
-		$window.location.href = '#!/';
-	}, 2000);
+	$window.location.href = '#!/';
 }
