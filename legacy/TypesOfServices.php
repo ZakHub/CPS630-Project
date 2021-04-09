@@ -48,6 +48,15 @@
             partnered stores you love.</p>
         </div>
       </div>
+       <br />
+      <div class="service-outer">
+        <div id="service-d" class="service floating"
+          onclick="location.href='ServiceD.php';">
+          <h2>Luxury Travel</h2>
+		<p>Get driven by one of are Sport Racing Champions and choose from are amazing luxury green energy
+			vehicles!</p>
+        </div>
+      </div>
     </div>
   </div>
 </body>
