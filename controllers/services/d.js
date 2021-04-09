@@ -1,4 +1,4 @@
-function serviceBController($scope, $http, $window)
+function serviceDController($scope, $http, $window)
 {
 	if (!$window.sessionStorage['user']) {
 		$window.location.href = '#!/login?from=services/d';
