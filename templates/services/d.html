@@ -1,0 +1,44 @@
+
+<div id="overlay">
+	<img id="cart" alt="shopping cart" src="resources/cart.png"
+		ondragover="angular.element(this).scope().allowDrop(event)"
+		ondrop="angular.element(this).scope().drop(event)" />
+</div>
+
+<div>
+	<h1>Luxury Travel Service</h1>
+	<h3>
+		Select Your Formula1 Driver and Luxury Green Energy Vehicle by dragging them to your cart
+	</h3>
+	<hr />
+	
+	<div id="store-container">
+		<div ng-repeat="racer in racer">
+			<div class="floating store" ng-if="racer.racers.length > 0">
+				<h3>{{ racer.racerName }}</h3>
+				<table class="centered" style="width: 100%;">
+					<tr>
+						<th>Description</th>
+						<th>Price</th>
+						<th>Drag to cart</th>
+					</tr>
+					<tr ng-repeat="luxury in racer.racers">
+						<td>{{ luxury.model }}</td>
+						<td>{{ luxury.rate.toFixed(2) }}</td>
+						<td class="draggable noselect" draggable="true"
+							data-json="{{ luxury }}"
+							ondragstart="angular.element(this).scope().drag(event)">
+							Drag Me
+						</td>
+					</tr>
+				</table>
+			</div>
+			<br />
+		</div>
+	</div>
+	<div id="attribution" style="position: fixed; bottom: 0;">
+		Icons made by <a href="https://www.freepik.com" title="Freepik">
+		Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">
+		www.flaticon.com</a>
+	</div>
+</div>
