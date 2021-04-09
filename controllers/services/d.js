@@ -29,7 +29,7 @@ function serviceDController($scope, $http, $window)
 		addToCart(JSON.parse(productJSON));
 	};
 	
-	$http.get('api/retrieveRacerLuxury.php').then(function (response) {
+	$http.get('api/retrieveRacerLuxuryCar.php').then(function (response) {
 		$scope.stores = response.data.results;
 	}, function (response) {
 		console.log(response.data || 'Failed to retrieve stores for ' +
