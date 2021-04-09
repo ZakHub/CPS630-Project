@@ -3,5 +3,6 @@ class Cart {
 	{
 		this.products = [];
 		this.trips = [];
+		this.joyrides = [];
 	}
 }

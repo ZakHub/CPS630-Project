@@ -8,11 +8,12 @@
 <div>
 	<h1>Luxury Travel Service</h1>
 	<h3>
-		Select Your Formula1 Driver and Luxury Green Energy Vehicle by dragging them to your cart
+		Select Your Formula1 Driver and Luxury Green Energy Vehicle by dragging
+		them to your cart
 	</h3>
 	<hr />
 	
-	<div id="store-container">
+	<!--<div id="store-container">
 		<div ng-repeat="racer in racer">
 			<div class="floating store" ng-if="racer.racers.length > 0">
 				<h3>{{ racer.racerName }}</h3>
@@ -34,8 +35,52 @@
 				</table>
 			</div>
 			<br />
-		</div>
-	</div>
+		</div>	
+	</div>-->
+	
+	<form novalidate="novalidate">
+		<table>
+			<tr>
+				<th>Select</th>
+				<th>Driver</th>
+				<th>Origin Country</th>
+			</tr>
+			<tr ng-repeat="driver in drivers">
+				<td><input id="driver-{{ driver.id }}" name="driver"
+					type="radio" ng-model="order.driver" ng-value="driver" /></td>
+				<td><label for="driver-{{ driver.id }}">
+					{{ driver.racerName }}
+				</label></td>
+				<td>{{ driver.country }}</td>
+			</tr>
+		</table>
+		<br />
+		<table>
+			<tr>
+				<th>Select</th>
+				<th>Model</th>
+				<th>Rate</th>
+			</tr>
+			<tr ng-repeat="vehicle in vehicles">
+				<td><input id="vehicle-{{ vehicle.id }}" name="vehicle"
+					type="radio" ng-model="order.vehicle" ng-value="vehicle" /></td>
+				<td><label for="vehicle-{{ vehicle.id }}">
+					{{ vehicle.model }}
+				</label></td>
+				<!-- Not sure why this line isn't working -->
+				<!--<td>${{ parseFloat(vehicle.rate).toFixed(2) }}</td>-->
+				<td>${{ vehicle.rate }}</td>
+			</tr>
+		</table>
+		
+		<p class="draggable noselect" ng-if="orderReady()" draggable="true"
+			ondragstart="angular.element(this).scope().drag(event)">
+			<strong>Drag this to add to cart</strong>
+		</p>
+		<p ng-if="!orderReady()">
+			<strong>Fill out your order before adding to cart</strong>
+		</p>
+	</form>
 	<div id="attribution" style="position: fixed; bottom: 0;">
 		Icons made by <a href="https://www.freepik.com" title="Freepik">
 		Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">
