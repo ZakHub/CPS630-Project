@@ -92,6 +92,7 @@
 		<script src="controllers/checkedout.js"></script>
 		<script src="controllers/services/a.js"></script>
 		<script src="controllers/services/b.js"></script>
+		<script src="controllers/services/d.js"></script>
 		
 		<script>
 			var app = angular.module('App', [ 'ngRoute', 'ngResource',
@@ -152,6 +153,11 @@
 					css: 'css/services/b.css',
 					templateUrl: 'templates/services/b.html',
 					controller: 'ServiceBController'
+				}).when('/services/d', {
+					title: 'Luxury Travel Service - GQZ Travels',
+					css: 'css/services/d.css',
+					templateUrl: 'templates/services/d.html',
+					controller: 'ServiceDController'
 				}).otherwise({ redirectTo: '/' });
 			});
 			app.controller('NavController', [ '$scope', '$window',
@@ -178,6 +184,8 @@
 				'$filter', 'leafletData', serviceAController ]);
 			app.controller('ServiceBController', [ '$scope', '$http', '$window',
 				serviceBController ]);
+			app.controller('ServiceDController', [ '$scope', '$http', '$window',
+				serviceDController ]);
 			
 			app.run([ '$rootScope', function ($rootScope) {
 				$rootScope.$on('$routeChangeSuccess',
