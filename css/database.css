@@ -10,10 +10,11 @@
 	float: left;	
 }
 
-#rows {
+#rows,#rows2 {
 	margin: 2%;
-	width: 70%;
+	width: 76%;
 	border: solid 2px;
 	padding: 2%;
 	float: left;
+	overflow: scroll;
 }
