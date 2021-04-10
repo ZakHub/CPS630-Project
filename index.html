@@ -34,21 +34,28 @@
 	<body>
 		<div id="outer">
 			<div id="inner" class="floating">
-				<!-- Module containing a common nav bar -->
-				<!--<nav class="nav" ng-controller="NavController">-->
 				<nav class="nav">
+					<div style="float: right; padding: 2%;" ng-if="currentUser">
+						<form method="GET" action="Search.php">
+							<input id="search" name="search" type="number"
+								placeholder="Search" />
+							<input type="submit" />
+						</form>
+					</div>
 					<img src="resources/Logo2.png" width="80" height="100"
-						class="d-inline-block align-top" alt="logo"/>
-					<a href="#!/">Home</a>
-					<a href="#!/logout" ng-if="currentUser">Log Out</a>
-					<a href="#!/login" ng-if="!currentUser">Log In</a>
-					<a href="#!/signup" ng-if="!currentUser">Sign Up</a>
-					<a href="#!/aboutus">About Us</a>
-					<a href="#!/contactus">Contact Us</a>
-					<a href="#!/reviews">Reviews</a>
-					<a href="#!/cart" ng-if="currentUser">Shopping Cart</a>
-					<a href="#!/services">Services</a>
-					<a href="#!/database" ng-if="currentUser.id === 1">Database</a> 
+							class="d-inline-block align-top" alt="logo"/>
+					<div style="width: 100%; display: inline-block;">
+						<a href="#!/">Home</a>
+						<a href="#!/logout" ng-if="currentUser">Log Out</a>
+						<a href="#!/login" ng-if="!currentUser">Log In</a>
+						<a href="#!/signup" ng-if="!currentUser">Sign Up</a>
+						<a href="#!/aboutus">About Us</a>
+						<a href="#!/contactus">Contact Us</a>
+						<a href="#!/reviews">Reviews</a>
+						<a href="#!/cart" ng-if="currentUser">Shopping Cart</a>
+						<a href="#!/services">Services</a>
+						<a href="#!/database" ng-if="currentUser.id === 1">Database</a>
+					</div>
 <!--					<div class="dropdown" ng-if="currentUser().id === 1">
 						<button class="dropbtn">db Maintain</button>
 						<div class="dropdown-content">
@@ -59,15 +66,7 @@
 						</div>
 					</div>
 -->
-					<div style="float: right; padding: 2%;" ng-if="currentUser">
-						<form method="GET" action="Search.php">
-							<input id="search" name="search" type="number"
-								placeholder="Search" />
-							<input type="submit" />
-						</form>
-					</div>
 				</nav>
-
 				<main id="content" ng-view></main>
 			</div>
 		</div>
