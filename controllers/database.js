@@ -24,8 +24,8 @@ function databaseController($scope, $http)
 	};
 
 	$scope.updateRow = function (row) {
-		$http.post('api/database.php?mode=update', row).then(function (response) {
-			
+		$http.put('api/database.php?mode=update&table=' + $scope.table, row).then(function (response) {
+			console.log(response);
 		}, function (response) {
 			alert('Failed to update row with index ' + row.id);
 			console.error(response.data || 'Failed to update row with unspecified reason.');

@@ -4,6 +4,8 @@
 	<h2>Tables</h2>
 	<div ng-repeat="table in tables">
 		<a class="clickable" ng-click="setTable(table.name)">{{ table.name }}</a>
+		<br />
+		<br />
 	</div>
 </div>
 <div id="rows" ng-if="!table">

@@ -24,7 +24,7 @@ try {
 	case 'cols':
 		{
 			if (!isset($_GET['table'])) {
-				respond(500, 'Missing GET parameter "table"');
+				respond(500, json_encode(array('message' => 'Missing GET parameter "table"')));
 			}
 
 			$query = 'SHOW COLUMNS FROM ' . $_GET['table'];
@@ -38,7 +38,7 @@ try {
 	case 'rows':
 		{
 			if (!isset($_GET['table'])) {
-				respond(500, json_encode('Missing GET parameter "table"'));
+				respond(500, json_encode(array('message' => 'Missing GET parameter "table"')));
 			}
 
 			$query = 'SELECT * FROM ' . $_GET['table'];
@@ -52,13 +52,13 @@ try {
 	case 'add':
 		{
 			if (!isset($_GET['table'])) {
-				respond(500, 'Missing GET parameter "table"');
+				respond(500, json_encode(array('message' => 'Missing GET parameter "table"')));
 			}
 			$payload = json_decode(file_get_contents('php://input'));
 			$query = 'INSERT INTO ' . $_GET['table'] . '(';
 			$first = true;
 			$argtypes = '';
-			foreach ($payload as $key => $value) {
+			foreach ($payload as $key => &$value) {
 				if (key == 'id') {
 					continue;
 				}
@@ -72,7 +72,7 @@ try {
 			$query = $query . ') VALUES (';
 			$args = array($argtypes);
 			$first = true;
-			foreach ($payload as $key => $value) {
+			foreach ($payload as $key => &$value) {
 				if ($key == 'id') {
 					continue;
 				}
@@ -97,7 +97,7 @@ try {
 	case 'delete':
 		{
 			if (!isset($_GET['table'])) {
-				respond(500, json_encode('Missing GET parameter "table"'));
+				respond(500, json_encode(array('message' => 'Missing GET parameter "table"')));
 			}
 			$payload = json_decode(file_get_contents('php://input'));
 			$query = 'DELETE FROM ' . $_GET['table'] . ' WHERE id = ?';
@@ -108,6 +108,39 @@ try {
 		}
 		break;
 	case 'update':
+		{
+			if (!isset($_GET['table'])) {
+				respond(500, json_encode(array('message' => 'Missing GET parameter "table"')));
+			}
+			$payload = json_decode(file_get_contents('php://input'));
+			$query = 'UPDATE ' . $_GET['table'] . ' SET ';
+			$first = true;
+			$argtypes = '';
+			$args = array();
+			foreach ($payload as $key => &$value) {
+				if ($key == 'id') {
+					continue;
+				}
+				if (!$first) {
+					$query = $query . ', ';
+				}
+				$argtypes = $argtypes . 's';
+				array_push($args, $value);
+				$query = $query . $key . ' = ?';
+				$first = false;
+			}
+			$query = $query . ' WHERE id = ?';
+			$argtypes = $argtypes . 'i';
+			array_push($args, $payload->id);
+			array_unshift($args, $argtypes);
+			//respond(500, json_encode(array('query' => $query, 'argtypes' => $argtypes)));
+			
+			$stmt = $conn->prepare($query);
+			array_unshift($args, $stmt);
+			call_user_func_array(mysqli_stmt_bind_param, $args);
+			
+			$stmt->execute();
+		}
 		break;
 	default:
 		respond(500, 'Unrecognized API mode \'' . mode . '\'.');
