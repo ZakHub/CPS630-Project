@@ -7,6 +7,8 @@ function databaseController($scope, $http)
 
 	$scope.setTable = function (table) {
 		$scope.table = table;
+		$scope.sortField = 'id';
+		$scope.reverse = false;
 		$http.get('api/database.php?mode=cols&table=' + table).then(
 			function (response) {
 			$scope.cols = parse_columns(response.data);
