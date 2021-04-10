@@ -1,0 +1,19 @@
+.clickable {
+	cursor: pointer;
+}
+
+.hidden {
+	display: none;
+}
+
+#tables {
+	float: left;	
+}
+
+#rows {
+	margin: 2%;
+	width: 70%;
+	border: solid 2px;
+	padding: 2%;
+	float: left;
+}

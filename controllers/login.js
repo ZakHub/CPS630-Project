@@ -1,4 +1,4 @@
-function loginController($scope, $http, $window, $location)
+function loginController($scope, $rootScope, $http, $window, $location)
 {
 	$scope.failed = false;
 	
@@ -17,10 +17,12 @@ function loginController($scope, $http, $window, $location)
 			};*/
 			const cart = new Cart();
 			if (user) {
+				$rootScope.currentUser = user;
 				$window.sessionStorage.setItem('user', JSON.stringify(user));
 				$window.sessionStorage.setItem('cart', JSON.stringify(cart));
 				$window.location.href = '#!/' + from;
 			} else {
+				$rootScope.currentUser = null;
 				$scope.failed = true;
 			}
 		}, function (response) {

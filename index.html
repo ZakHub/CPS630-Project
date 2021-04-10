@@ -35,19 +35,21 @@
 		<div id="outer">
 			<div id="inner" class="floating">
 				<!-- Module containing a common nav bar -->
-				<nav class="nav" ng-controller="NavController">
+				<!--<nav class="nav" ng-controller="NavController">-->
+				<nav class="nav">
 					<img src="resources/Logo2.png" width="80" height="100"
 						class="d-inline-block align-top" alt="logo"/>
 					<a href="#!/">Home</a>
-					<a href="#!/logout" ng-if="currentUser()">Log Out</a>
-					<a href="#!/login" ng-if="!currentUser()">Log In</a>
-					<a href="#!/signup" ng-if="!currentUser()">Sign Up</a>
+					<a href="#!/logout" ng-if="currentUser">Log Out</a>
+					<a href="#!/login" ng-if="!currentUser">Log In</a>
+					<a href="#!/signup" ng-if="!currentUser">Sign Up</a>
 					<a href="#!/aboutus">About Us</a>
 					<a href="#!/contactus">Contact Us</a>
 					<a href="#!/reviews">Reviews</a>
-					<a href="#!/cart" ng-if="currentUser()">Shopping Cart</a>
+					<a href="#!/cart" ng-if="currentUser">Shopping Cart</a>
 					<a href="#!/services">Services</a>
-					<div class="dropdown" ng-if="currentUser().id === 1">
+					<a href="#!/database" ng-if="currentUser.id === 1">Database</a> 
+<!--					<div class="dropdown" ng-if="currentUser().id === 1">
 						<button class="dropbtn">db Maintain</button>
 						<div class="dropdown-content">
 							<a href="insert.php" target="_blank">Insert</a>
@@ -56,7 +58,8 @@
 							<a href="select.php" target="_blank">Select</a>
 						</div>
 					</div>
-					<div style="float: right; padding: 2%;" ng-if="currentUser()">
+-->
+					<div style="float: right; padding: 2%;" ng-if="currentUser">
 						<form method="GET" action="Search.php">
 							<input id="search" name="search" type="number"
 								placeholder="Search" />
@@ -78,6 +81,7 @@
 		<!-- load models -->
 		<script src="models/Address.js"></script>
 		<script src="models/Cart.js"></script>
+		<script src="models/Column.js"></script>
 		<script src="models/LatLng.js"></script>
 		<script src="models/LeafletCenter.js"></script>
 		<script src="models/Trip.js"></script>
@@ -93,6 +97,7 @@
 		<script src="controllers/services/a.js"></script>
 		<script src="controllers/services/b.js"></script>
 		<script src="controllers/services/d.js"></script>
+		<script src="controllers/database.js"></script>
 		
 		<script>
 			var app = angular.module('App', [ 'ngRoute', 'ngResource',
@@ -158,21 +163,26 @@
 					css: 'css/services/d.css',
 					templateUrl: 'templates/services/d.html',
 					controller: 'ServiceDController'
+				}).when('/database', {
+					title: 'Database Maintenance - GQZ Travels',
+					css: 'css/database.css',
+					templateUrl: 'templates/database.html',
+					controller: 'DatabaseController'
 				}).otherwise({ redirectTo: '/' });
 			});
-			app.controller('NavController', [ '$scope', '$window',
+			/*app.controller('NavController', [ '$scope', '$window',
 				function ($scope, $window) {
 				$scope.currentUser = function () {
 					return $window.sessionStorage['user'];
 				};
-			} ]);
+			} ]);*/
 			app.controller('HomeController', [ '$scope', '$interval',
 				homeController ]);
 			app.controller('SignUpController', [ '$scope', '$http', '$window',
 				signupController ]);
-			app.controller('LogInController', [ '$scope', '$http', '$window',
-				'$location', loginController ]);
-			app.controller('LogOutController', [ '$scope', '$window',
+			app.controller('LogInController', [ '$scope', '$rootScope', '$http',
+				'$window', '$location', loginController ]);
+			app.controller('LogOutController', [ '$scope', '$rootScope', '$window',
 				logoutController ]);
 			app.controller('ReviewsController', [ '$scope', '$http',
 				reviewsController ]);
@@ -186,8 +196,13 @@
 				serviceBController ]);
 			app.controller('ServiceDController', [ '$scope', '$http', '$window',
 				serviceDController ]);
+			app.controller('DatabaseController', [ '$scope', '$http',
+				databaseController ]);
 			
-			app.run([ '$rootScope', function ($rootScope) {
+			app.run([ '$rootScope', '$window', function ($rootScope, $window) {
+				if (!$rootScope.currentUser && $window.sessionStorage['user']) {
+					$rootScope.currentUser = JSON.parse($window.sessionStorage['user']);
+				}
 				$rootScope.$on('$routeChangeSuccess',
 					function (event, current, previous) {
 					$rootScope.title = current.$$route.title;
