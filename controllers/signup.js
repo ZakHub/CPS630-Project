@@ -34,4 +34,8 @@ function signupController($scope, $http, $window)
 			console.log(response.data || 'Request failed with unspecified reason');
 		});
 	};
+	
+	$scope.goBack = function () {
+		$window.history.back();
+	};
 }

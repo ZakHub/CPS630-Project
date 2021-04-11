@@ -8,7 +8,7 @@ $response = array('status' => 'Success', 'results' => null);
 $query = 
 	'SELECT id, username FROM UserInfo ' .
 	'WHERE username = ? ' .
-	'AND passwrd = SHA1(?)';
+	'AND passwrd = SHA1(CONCAT(FROM_BASE64(salt), ?))';
 
 try {
 	$stmt = $conn->prepare($query);
