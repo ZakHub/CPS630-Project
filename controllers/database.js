@@ -4,6 +4,10 @@ function databaseController($scope, $http)
 	$scope.cols = null;
 	$scope.rows = null;
 	$scope.newRow = { };
+	
+	$scope.filter = '';
+	$scope.sortField = 'id';
+	$scope.reverse = false;
 
 	$scope.setTable = function (table) {
 		$scope.table = table;
@@ -52,6 +56,11 @@ function databaseController($scope, $http)
 			alert('Failed to add new row');
 			console.error(response.data || 'Failed to add new row with unspecified reason');
 		});
+	}
+	
+	$scope.setSort = function (field) {
+		$scope.sortField = field;
+		$scope.reverse = !$scope.reverse;
 	}
 
 	$http.get('api/database.php?mode=tables').then(function (response) {

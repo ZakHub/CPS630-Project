@@ -14,14 +14,15 @@
 <div id="rows2" ng-if="table">
 	<h2 ng-bind="table"></h2>
 	<form>
-		<div style="float: right;>
+		<div style="float: right;">
 			<label for="filter">Filter: </label>
 			<input id="filter" ng-model="search" type="text" />
 		</div>
 		<table ng-if="rows">
 			<tr>
 				<th>Modify</th>
-				<th ng-repeat="col in cols" ng-bind="col.name" ng-click="sortField = col.name"></th>
+				<th ng-repeat="col in cols"><a href="" ng-bind="col.name"
+					ng-click="setSort(col.name)"></a></th>
 			</tr>
 			<tr>
 				<td><button type="button" ng-click="addRow(newRow)">Add</button></td>
