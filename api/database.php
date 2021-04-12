@@ -59,7 +59,7 @@ try {
 			$first = true;
 			$argtypes = '';
 			foreach ($payload as $key => &$value) {
-				if (key == 'id') {
+				if ($key == 'id') {
 					continue;
 				}
 				if (!$first) {
