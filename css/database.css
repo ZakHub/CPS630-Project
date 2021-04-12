@@ -10,7 +10,7 @@
 	float: left;	
 }
 
-#rows,#rows2 {
+#rows, #norows {
 	margin: 2%;
 	width: 76%;
 	border: solid 2px;
