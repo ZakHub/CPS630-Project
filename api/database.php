@@ -147,6 +147,10 @@ try {
 		break;
 	}
 } catch (mysqli_sql_exception $e) {
+	// catch sql exceptions
+	respond(500, json_encode($e));
+} catch (Exception $e) {
+	// catch generic exceptions
 	respond(500, json_encode($e));
 }
 
