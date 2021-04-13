@@ -18,7 +18,7 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-resource.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-leaflet-directive/0.10.0/angular-leaflet-directive.js"></script>
-		
+		<script src="controllers/browser.js"></script>
 		<!-- Leaflet files -->
 		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
 			integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
@@ -30,6 +30,7 @@
 		<!-- Leaflet Routing Machine files -->
 		<link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
 		<script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+
 	</head>
 	<body>
 		<div id="outer">
@@ -68,6 +69,7 @@
 -->
 				</nav>
 				<main id="content" ng-view></main>
+				<footer id="brower"></footer>
 			</div>
 		</div>
 		
@@ -209,6 +211,7 @@
 				});
 			} ]);
 		</script>
+
 	</body>
 </html>
 
