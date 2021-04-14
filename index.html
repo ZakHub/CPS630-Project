@@ -18,7 +18,6 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-resource.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-leaflet-directive/0.10.0/angular-leaflet-directive.js"></script>
-		<script src="controllers/browser.js"></script>
 		<!-- Leaflet files -->
 		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
 			integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
@@ -57,19 +56,10 @@
 						<a href="#!/services">Services</a>
 						<a href="#!/database" ng-if="currentUser.id === 1">Database</a>
 					</div>
-<!--					<div class="dropdown" ng-if="currentUser().id === 1">
-						<button class="dropbtn">db Maintain</button>
-						<div class="dropdown-content">
-							<a href="insert.php" target="_blank">Insert</a>
-							<a href="delete.php" target="_blank">Delete</a>
-							<a href="update.php" target="_blank">Update</a>
-							<a href="select.php" target="_blank">Select</a>
-						</div>
-					</div>
--->
 				</nav>
 				<main id="content" ng-view></main>
-				<footer id="brower"></footer>
+				<footer id="browser-name" ng-controller="BrowserNameController"
+					ng-bind="browserName"></footer>
 			</div>
 		</div>
 		
@@ -177,6 +167,20 @@
 					return $window.sessionStorage['user'];
 				};
 			} ]);*/
+			app.controller('BrowserNameController', function ($scope) {
+				const userAgent = navigator.userAgent;
+				if (userAgent.indexOf("Opera") > -1) {
+					$scope.browserName = "Opera Browser"
+				} else if (userAgent.indexOf("Firefox") > -1) {
+					$scope.browserName = "Firefox Browser";
+				} else if (userAgent.indexOf("Chrome") > -1) {
+					$scope.browserName = "Chrome Browser";
+				} else if (userAgent.indexOf("Safari") > -1) {
+					$scope.browserName = "Safari Browser";
+				} else {
+					$scope.browserName = "Unknown Browser"
+				}
+			});
 			app.controller('HomeController', [ '$scope', '$interval',
 				homeController ]);
 			app.controller('SignUpController', [ '$scope', '$http', '$window',
