@@ -2,11 +2,7 @@ function starRatingDirective()
 {
 	return {
 		restrict: 'A',
-		template: '<ul class="rating">' +
-			'<li ng-repeat="star in stars" ng-class="star" ng-click="toggle($index)">' +
-			'<em>\u272A</em>' +
-			'</li>' +
-			'</ul>',
+		templateUrl: 'directives/templates/starRating.html',
 		scope: {
 			ratingValue: '=',
 			max: '=',
@@ -30,7 +26,7 @@ function starRatingDirective()
 				});
 			};
 
-			scope.$watch('ratingValue', function (oldVal, newVal) {
+			scope.$watch('ratingValue', function (newVal, oldVal) {
 				if (newVal) {
 					updateStars();
 				}

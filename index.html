@@ -36,13 +36,7 @@
 		<div id="outer">
 			<div id="inner" class="floating">
 				<nav class="nav">
-					<div style="float: right; padding: 2%;" ng-if="currentUser">
-						<form method="GET" action="Search.php">
-							<input id="search" name="search" type="number"
-								placeholder="Search" />
-							<input type="submit" />
-						</form>
-					</div>
+					<search ng-if="currentUser"></search>
 					<img src="resources/Logo2.png" width="80" height="100"
 							class="d-inline-block align-top" alt="logo"/>
 					<div style="width: 100%; display: inline-block;">
@@ -55,10 +49,12 @@
 						<a href="#!/reviews">Reviews</a>
 						<a href="#!/cart" ng-if="currentUser">Shopping Cart</a>
 						<a href="#!/services">Services</a>
-						<a href="#!/database" ng-if="currentUser.id === 1">Database</a>
+						<a href="#!/database" ng-if="currentUser.id === 1">
+							Database
+						</a>
 					</div>
 				</nav>
-				<main id="content" ng-view></main>
+				<main id="content" ng-view=""></main>
 				<footer id="browser-name" ng-controller="BrowserNameController"
 					ng-bind="browserName"></footer>
 			</div>
@@ -79,6 +75,7 @@
 		<script src="models/Trip.js"></script>
 		
 		<!-- load custom directives -->
+		<script src="directives/search.js"></script>
 		<script src="directives/starRating.js"></script>
 		
 		<!-- load controllers -->
@@ -93,6 +90,7 @@
 		<script src="controllers/services/b.js"></script>
 		<script src="controllers/services/d.js"></script>
 		<script src="controllers/database.js"></script>
+		<script src="controllers/search.js"></script>
 		
 		<script>
 			var app = angular.module('App', [ 'ngRoute', 'ngResource',
@@ -163,14 +161,50 @@
 					css: 'css/database.css',
 					templateUrl: 'templates/database.html',
 					controller: 'DatabaseController'
+				}).when('/search', {
+					title: 'Search - GQZ Travels',
+					css: 'css/search.css',
+					templateUrl: 'templates/search.html',
+					controller: 'SearchController'
 				}).otherwise({ redirectTo: '/' });
 			});
+			/*app.factory('searchParameters', function () {
+				var query = '';
+				return {
+					getQuery: function () { return query; },
+					setQuery: function (q) { query = q; }
+				};
+			});*/
+			app.factory('searchParameters', function ($rootScope) {
+				return {
+					query: '',
+					subscribe: function (scope, callback) {
+						var handler = $rootScope.$on('search-change-event',
+							callback);
+						scope.$on('$destroy', handler);
+					},
+					notify: function () {
+						$rootScope.$emit('search-change-event');
+					}
+				};
+			});
+			
 			/*app.controller('NavController', [ '$scope', '$window',
 				function ($scope, $window) {
 				$scope.currentUser = function () {
 					return $window.sessionStorage['user'];
 				};
 			} ]);*/
+			/*app.controller('SearchController', [ '$scope', '$window',
+				function ($scope, $window) {
+				console.warn('reloaded');
+				$scope.query = '';
+				$scope.goToSearch = function () {
+					if ($scope.query) {
+						$window.location.href = '#!/search';
+					}
+				}
+			}]);*/
 			app.controller('BrowserNameController', function ($scope) {
 				const userAgent = navigator.userAgent;
 				if (userAgent.indexOf("Opera") > -1) {
@@ -207,7 +241,10 @@
 				serviceDController ]);
 			app.controller('DatabaseController', [ '$scope', '$http',
 				databaseController ]);
+			app.controller('SearchController', [ '$scope', '$http',
+				'searchParameters', searchController ]);
 			
+			app.directive('search', searchDirective);
 			app.directive('starRating', starRatingDirective);
 			
 			app.run([ '$rootScope', '$window', function ($rootScope, $window) {

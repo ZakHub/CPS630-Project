@@ -1,0 +1,18 @@
+<h1>Search Results</h1>
+<h2 ng-if="query">Results for query "{{ query }}"</h2>
+<h2 ng-if="!query">No query submitted</h2>
+<br />
+<table ng-if="query && data">
+	<tr>
+		<th>ID</th>
+		<th>Order Date</th>
+		<th>Price</th>
+		<th>User ID</th>
+	</tr>
+	<tr ng-repeat="order in data">
+		<td ng-bind="order.id"></td>
+		<td ng-bind="order.orderDate"></td>
+		<td>${{ order.price }}</td>
+		<td ng-bind="order.userId"></td>
+	</tr>
+</table>
