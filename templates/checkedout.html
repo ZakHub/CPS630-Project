@@ -1,7 +1,9 @@
 <h1>Order Placed</h1>
 <h2>Successfully placed order #{{ orderId }}</h2>
 
-<form ng-if="!submitted">
+<strong ng-if="!orderId">Invalid or missing order ID</strong>
+
+<form ng-if="orderId && !submitted">
 	<label for="review">Please give us your feedback</label>
 	<div>
 		<div ng-repeat="rating in ratings">

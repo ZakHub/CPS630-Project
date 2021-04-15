@@ -3,11 +3,18 @@
 require_once('connect.php');
 
 $query =
-    'SELECT LEFT(ui.firstName, 1) AS firstInitial, ' .
-    'LEFT(ui.lastName, 1) AS lastInitial, r.feedback ' .
-    'FROM Review AS r ' .
-    'INNER JOIN UserInfo AS ui ' .
-    'ON ui.id = r.userId';
+'SELECT LEFT(ui.firstName, 1) AS firstInitial, ' .
+'LEFT(ui.lastName, 1) AS lastInitial, r.rating, r.feedback ' .
+'FROM Review AS r ' .
+'INNER JOIN UserInfo AS ui ' .
+'ON ui.id = r.userId ' .
+'INNER JOIN (' .
+	'SELECT userId, MAX(id) AS newest ' .
+	'FROM Review ' .
+	'GROUP BY userId' .
+') AS r2 ' .
+'ON r.id = r2.newest AND r.userId = r2.userId ' .
+'ORDER BY r.id DESC';
 
 $reviews = array('status' => 'Success', 'results' => array());
 try {

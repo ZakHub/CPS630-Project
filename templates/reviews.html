@@ -3,7 +3,10 @@
 
 <div class="review" ng-if="success && reviews.length > 0"
 	ng-repeat="review in reviews">
-	<h3>{{ review.firstInitial }}. {{ review.lastInitial }}. says:</h3>
-	<p>{{ review.feedback }}</p>
+	<strong style="display: inline;">{{ review.firstInitial }}.
+		{{ review.lastInitial }}. rated us {{ review.rating }}/10 and
+		said</strong>
+	<p style="display: inline;">"{{ review.feedback }}".</p>
+	<br />
 	<br />
 </div>
