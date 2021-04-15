@@ -39,10 +39,11 @@ try {
     
     $stmt = $conn->prepare($tripQuery);
     foreach ($order->cart->trips as &$trip) {
+        $date = substr($trip->date, 0, strpos($trip->date, 'T'));    // ugly hack
         $stmt->bind_param('dddddids', $trip->fromPos->lat, $trip->fromPos->lng,
             $trip->toPos->lat, $trip->toPos->lng, $trip->distance,
             $trip->car->id, $trip->cost,
-            substr($trip->date, 0, strpos($trip->date, 'T')));   // ugly hack
+            $date);
         $stmt->execute();
     }
     $stmt->close();
