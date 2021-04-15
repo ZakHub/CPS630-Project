@@ -3,6 +3,7 @@ function checkedOutController($scope, $http, $window, $location)
 	$scope.orderId = $location.search().orderId;
 	$scope.review = '';
 	$scope.submitted = false;
+	initStarRating($scope, 10);
 	
 	$scope.submitReview = function () {
 		if (!$scope.review) {
@@ -20,4 +21,5 @@ function checkedOutController($scope, $http, $window, $location)
 			console.error(response);
 		});
 	};
+    
 }

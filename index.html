@@ -7,6 +7,7 @@
 		
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="stylesheet" href="css/common.css" />
+		<link rel="stylesheet" href="css/starRating.css" />
 		<link rel="stylesheet" ng-href="{{ css }}" ng-if="css" />
 
 		<!-- Non-minified provides useful debugging information -->
@@ -76,6 +77,9 @@
 		<script src="models/LatLng.js"></script>
 		<script src="models/LeafletCenter.js"></script>
 		<script src="models/Trip.js"></script>
+		
+		<!-- load custom directives -->
+		<script src="directives/starRating.js"></script>
 		
 		<!-- load controllers -->
 		<script src="controllers/home.js"></script>
@@ -203,6 +207,8 @@
 				serviceDController ]);
 			app.controller('DatabaseController', [ '$scope', '$http',
 				databaseController ]);
+			
+			app.directive('starRating', starRatingDirective);
 			
 			app.run([ '$rootScope', '$window', function ($rootScope, $window) {
 				if (!$rootScope.currentUser && $window.sessionStorage['user']) {
