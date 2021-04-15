@@ -20,22 +20,19 @@ function cartController($scope, $http, $window)
 	};
 	
 	$scope.checkout = function () {
-		console.log('checkout called');
 		const order = {
 			cart: $scope.cart,
 			total: $scope.total().toFixed(2),
 			user: JSON.parse($window.sessionStorage['user'])
 		};
-		console.log(order);
 		$http.post('api/checkout.php', order).then(function (response) {
 			const orderId = response.data.orderId;
-			console.log(response);
 			$scope.cart = new Cart();
 			$window.sessionStorage['cart'] = JSON.stringify($scope.cart);
 			$window.location.href = '#!/checkedout?orderId=' + orderId;
 		}, function (response) {
 			alert('Failed to checkout');
-			console.error(response.data || 'Unspecified error occurred');
+			console.error(response);
 		});
 	};
 }

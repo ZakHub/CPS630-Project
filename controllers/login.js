@@ -27,7 +27,7 @@ function loginController($scope, $rootScope, $http, $window, $location)
 			}
 		}, function (response) {
 			$scope.failed = true;
-			console.log(response.data || 'Request failed with unspecified reason');
+			console.log(response);
 		});
 	};
 }

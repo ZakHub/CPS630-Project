@@ -6,7 +6,6 @@ function searchController($scope, $http, searchParameters)
 	function fetchResults()
 	{
 		$http.get('api/search.php?query=' + $scope.query).then(function (response) {
-			console.log(response);
 			$scope.data = response.data;
 		}, function (response) {
 			alert('Failed to perform search');

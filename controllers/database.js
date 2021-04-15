@@ -19,14 +19,14 @@ function databaseController($scope, $http)
 			$scope.cols = parse_columns(response.data);
 		}, function (response) {
 			alert('Failed to retrieve rows for table ' + table);
-			console.error(response.data || 'Failed to retrieve rows with unspecified reason');
+			console.error(response);
 		});
 		$http.get('api/database.php?mode=rows&table=' + table).then(
 			function (response) {
 			$scope.rows = response.data;
 		}, function (response) {
 			alert('Failed to retrieve rows for table ' + table);
-			console.error(response.data || 'Failed to retrieve rows with unspecified reason');
+			console.error(response);
 		});
 	};
 
@@ -35,7 +35,7 @@ function databaseController($scope, $http)
 			console.log(response);
 		}, function (response) {
 			alert('Failed to update row with index ' + row.id);
-			console.error(response.data || 'Failed to update row with unspecified reason.');
+			console.error(response);
 		});
 	};
 
@@ -44,7 +44,7 @@ function databaseController($scope, $http)
 			$scope.rows = $scope.rows.filter(function (r) { return r.id != row.id; });
 		}, function (response) {
 			alert('Failed to delete row with index ' + row.id);
-			console.error(response.data || 'Failed to delete row with unspecified reason');
+			console.error(response);
 		});
 	};
 	
@@ -55,7 +55,7 @@ function databaseController($scope, $http)
 			$scope.newRow = { };
 		}, function (response) {
 			alert('Failed to add new row');
-			console.error(response.data || 'Failed to add new row with unspecified reason');
+			console.error(response);
 		});
 	}
 	
@@ -68,7 +68,7 @@ function databaseController($scope, $http)
 		$scope.tables = response.data;
 	}, function (response) {
 		alert('Failed to retrieve table list');
-		console.error(response.data || 'Failed to retrieve table list for unknown reason');
+		console.error(response);
 	});
 }
 
