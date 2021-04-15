@@ -72,6 +72,7 @@ try {
 			$query = $query . ') VALUES (';
 			$args = array($argtypes);
 			$first = true;
+			$properties = get_object_vars($payload);
 			foreach ($payload as $key => &$value) {
 				if ($key == 'id') {
 					continue;
@@ -85,10 +86,9 @@ try {
 			}
 			$query = $query . ')';
 
-			//respond(500, json_encode(array('query' => $query)));
 			$stmt = $conn->prepare($query);
-			array_unshift($args, $stmt);
-			call_user_func_array(mysqli_stmt_bind_param, $args);
+			$binder = (new ReflectionClass('mysqli_stmt'))->getMethod('bind_param');
+			$binder->invokeArgs($stmt, $args);
 			$stmt->execute();
 			$response['id'] = $conn->insert_id;
 			$stmt->close();
@@ -136,8 +136,8 @@ try {
 			//respond(500, json_encode(array('query' => $query, 'argtypes' => $argtypes)));
 			
 			$stmt = $conn->prepare($query);
-			array_unshift($args, $stmt);
-			call_user_func_array(mysqli_stmt_bind_param, $args);
+			$binder = (new ReflectionClass('mysqli_stmt'))->getMethod('bind_param');
+			$binder->invokeArgs($stmt, $args);
 			
 			$stmt->execute();
 		}
