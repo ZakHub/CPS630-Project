@@ -1,13 +1,19 @@
 function serviceDController($scope, $http, $window)
 {
+	$scope.order = new JoyRide();
+	
 	if (!$window.sessionStorage['user']) {
 		$window.location.href = '#!/login?from=services/d';
 	}
 	
-	function addToCart(product)
+	function addToCart(order)
 	{
+		console.log('addToCart called');
 		var cart = JSON.parse($window.sessionStorage['cart']);
-		cart.products.push(product);
+		cart.joyrides.push({
+			order: order,
+			cost: order.vehicle.rate * order.distance
+		});
 		$window.sessionStorage['cart'] = JSON.stringify(cart);
 		//console.log($window.sessionStorage);
 		/*if (confirm('Success. Go to cart?')) {
@@ -25,14 +31,27 @@ function serviceDController($scope, $http, $window)
 	
 	$scope.drop = function (event) {
 		event.preventDefault();
-		var productJSON = event.dataTransfer.getData('text');
-		addToCart(JSON.parse(productJSON));
+		//var productJSON = event.dataTransfer.getData('text');
+		//addToCart(JSON.parse(productJSON));
+		addToCart($scope.order);
 	};
 	
-	$http.get('api/retrieveRacerLuxury.php').then(function (response) {
-		$scope.stores = response.data.results;
+	$scope.orderReady = function () {
+		var validated = true;
+		for (var key of Object.keys($scope.order)) {
+			if (!$scope.order[key]) {
+				return false;
+			}
+		}
+		return true;
+	};
+	
+	$http.get('api/retrieveRacerLuxuryCar.php').then(function (response) {
+		//$scope.stores = response.data.results;
+		//console.log(response);
+		$scope.drivers = response.data.racers;
+		$scope.vehicles = response.data.vehicles;
 	}, function (response) {
 		console.log(response);
 	});
 }
-

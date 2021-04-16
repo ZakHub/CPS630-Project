@@ -25,4 +25,20 @@ VALUES
 	-- ('This is feedback provided by user 1', 1),
 	-- ('This is some more feedback kindly provided by user 2', 3);
 
+INSERT INTO LuxuryCar
+	(model, rate)
+VALUES
+	('Mercedes-Benz EQC 2021', 2000),
+	('Jaguar I-Pace 2021', 3000),
+	('Ford Mustang Mach-E 2021', 4000),
+	('Tesla Model S 2021', 5000);
+
+INSERT INTO Racer
+	(racerName, country)
+VALUES
+	('Lewis Hamilton', 'United Kingdom'),
+	('Sebastian Vettel', 'Germany'),
+	('Fernando Alonse', 'Spain'),
+	('Felipe Massa', 'Brazil');
+
 COMMIT;

@@ -6,6 +6,10 @@ function cartController($scope, $http, $window)
 	
 	$scope.cart = JSON.parse($window.sessionStorage['cart']);
 	
+	$scope.empty = function () {
+		return cart_isEmpty($scope.cart);
+	}
+	
 	$scope.delete = function (which, item) {
 		const i = $scope.cart[which].indexOf(item);
 		if (i > -1) {
@@ -15,8 +19,10 @@ function cartController($scope, $http, $window)
 	};
 	
 	$scope.total = function () {
-		return $scope.cart.products.map(p => p.price).reduce((a, b) => a + b, 0)
-			+ $scope.cart.trips.map(t => t.cost).reduce((a, b) => a + b, 0);
+		/*return $scope.cart.products.map(p => p.price).reduce((a, b) => a + b, 0)
+			+ $scope.cart.trips.map(t => t.cost).reduce((a, b) => a + b, 0)
+			+ $scope.cart.;*/
+		return cart_total($scope.cart);
 	};
 	
 	$scope.checkout = function () {

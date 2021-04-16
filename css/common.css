@@ -1,3 +1,15 @@
+#browser-name {
+    float: right;
+    padding: 1%;
+    clear: right;
+}
+
+#search div {
+    float: right;
+    padding: 1%;
+    clear: right;
+}
+
 #inner {
     width: 1000px;
     height: 4300px;

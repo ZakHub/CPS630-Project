@@ -36,7 +36,10 @@
 		<div id="outer">
 			<div id="inner" class="floating">
 				<nav class="nav">
-					<search ng-if="currentUser"></search>
+					<div id="browser-name" ng-controller="BrowserNameController">
+						<strong ng-bind="browserName"></strong>
+					</div>
+					<search id="search" ng-if="currentUser"></search>
 					<img src="resources/Logo2.png" width="80" height="100"
 							class="d-inline-block align-top" alt="logo"/>
 					<div style="width: 100%; display: inline-block;">
@@ -55,8 +58,8 @@
 					</div>
 				</nav>
 				<main id="content" ng-view=""></main>
-				<footer id="browser-name" ng-controller="BrowserNameController"
-					ng-bind="browserName"></footer>
+				<!--<footer id="browser-name" ng-controller="BrowserNameController"
+					ng-bind="browserName"></footer>-->
 			</div>
 		</div>
 		
@@ -70,6 +73,7 @@
 		<script src="models/Address.js"></script>
 		<script src="models/Cart.js"></script>
 		<script src="models/Column.js"></script>
+		<script src="models/JoyRide.js"></script>
 		<script src="models/LatLng.js"></script>
 		<script src="models/LeafletCenter.js"></script>
 		<script src="models/Trip.js"></script>
