@@ -7,8 +7,18 @@ if (!isset($_GET['query'])) {
 }
 
 $response = array();
+$query =
+	'SELECT oi.*, i.itemCount ' .
+	'FROM OrderInfo AS oi ' .
+	'LEFT JOIN (' .
+		'SELECT orderId, COUNT(*) AS itemCount ' .
+		'FROM OrderedItem ' .
+		'GROUP BY orderId ' .
+	') AS i ' .
+	'ON oi.id = i.orderId ' .
+	'WHERE ? in (oi.id, oi.userId)';
+
 try {
-	$query = 'SELECT * FROM OrderInfo WHERE ? in (id, userId)';
 	$stmt = $conn->prepare($query);
 	$stmt->bind_param('i', $_GET['query']);
 	$stmt->execute();

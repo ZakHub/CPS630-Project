@@ -2,17 +2,20 @@
 <h2 ng-if="query">Results for query "{{ query }}"</h2>
 <h2 ng-if="!query">No query submitted</h2>
 <br />
-<table ng-if="query && data">
+<strong ng-if="query && !data.length">No results found.</strong>
+<table ng-if="query && data.length">
 	<tr>
 		<th>ID</th>
 		<th>Order Date</th>
 		<th>Price</th>
 		<th>User ID</th>
+		<th>Ordered Items</th>
 	</tr>
 	<tr ng-repeat="order in data">
 		<td ng-bind="order.id"></td>
 		<td ng-bind="order.orderDate"></td>
 		<td>${{ order.price }}</td>
 		<td ng-bind="order.userId"></td>
+		<td ng-bind="order.itemCount"></td>
 	</tr>
 </table>
