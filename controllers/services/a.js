@@ -112,6 +112,9 @@ function serviceAController($scope, $http, $window, $filter, leafletData)
 			map.fitBounds([$scope.trip.fromPos, $scope.trip.toPos]);
 			if (!route) {
 				route = L.Routing.control({
+					/*router: new L.Routing.OSRMv1({
+						serviceUrl: 'http://localhost:5000/route/v1'
+					}),*/
 					waypoints: [ $scope.trip.fromPos, $scope.trip.toPos ],
 					show: false
 				}).on('routesfound', function (e) {
