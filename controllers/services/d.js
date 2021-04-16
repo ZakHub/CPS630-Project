@@ -10,9 +10,12 @@ function serviceDController($scope, $http, $window)
 	{
 		console.log('addToCart called');
 		var cart = JSON.parse($window.sessionStorage['cart']);
-		cart.joyrides.push(order);
+		cart.joyrides.push({
+			order: order,
+			cost: order.vehicle.rate * order.distance
+		});
 		$window.sessionStorage['cart'] = JSON.stringify(cart);
-		console.log($window.sessionStorage);
+		//console.log($window.sessionStorage);
 		/*if (confirm('Success. Go to cart?')) {
 			$window.location.href = '#!/cart'
 		}*/

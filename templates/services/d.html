@@ -59,7 +59,7 @@
 			<tr>
 				<th>Select</th>
 				<th>Model</th>
-				<th>Rate</th>
+				<th>Rate ($/Km)</th>
 			</tr>
 			<tr ng-repeat="vehicle in vehicles">
 				<td><input id="vehicle-{{ vehicle.id }}" name="vehicle"
@@ -72,6 +72,9 @@
 				<td>${{ vehicle.rate }}</td>
 			</tr>
 		</table>
+		<br />
+		<label for="distance"><strong>Distance (Km): </strong></label>
+		<input id="distance" type="number" ng-model="order.distance" />
 		
 		<p class="draggable noselect" ng-if="orderReady()" draggable="true"
 			ondragstart="angular.element(this).scope().drag(event)">

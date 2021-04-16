@@ -96,7 +96,9 @@
 		<script>
 			var app = angular.module('App', [ 'ngRoute', 'ngResource',
 				'leaflet-directive' ]);
-			app.config(function ($routeProvider) {
+			app.config(function ($httpProvider, $routeProvider) {
+				$httpProvider.defaults.useXDomain = true;
+				
 				$routeProvider.when('/', {
 					title: 'GQZ Travels',
 					templateUrl: 'templates/home.html',

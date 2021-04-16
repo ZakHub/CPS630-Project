@@ -3,5 +3,8 @@ class JoyRide {
 	{
 		this.vehicle = null;
 		this.driver = null;
+		this.distance = null;
 	}
 }
+
+
