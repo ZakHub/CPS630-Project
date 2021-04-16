@@ -37,6 +37,7 @@ function serviceAController($scope, $http, $window, $filter, leafletData)
 					$scope.trip.toAddr.country = address.country;
 				}, function (response) {
 					console.warn('Failed to lookup current address');
+					console.warn(response);
 				});
 			});
 		});
@@ -85,7 +86,7 @@ function serviceAController($scope, $http, $window, $filter, leafletData)
 		const fromResponse = await fromResponsePromise;
 		if (fromResponse.status !== 200 || !fromResponse.data.length) {
 			alert('Failed to lookup starting position');
-			console.warn(fromResponse.data);
+			console.warn(fromResponse);
 			return;
 		}
 		$scope.trip.fromPos = new LatLng(parseFloat(fromResponse.data[0].lat),
@@ -94,7 +95,7 @@ function serviceAController($scope, $http, $window, $filter, leafletData)
 		const toResponse = await toResponsePromise;
 		if (toResponse.status !== 200 || !toResponse.data.length) {
 			alert('Failed to lookup destination position');
-			console.warn(toResponse.data);
+			console.warn(toResponse);
 			return;
 		}
 		$scope.trip.toPos = new LatLng(parseFloat(toResponse.data[0].lat),

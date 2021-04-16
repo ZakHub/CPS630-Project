@@ -49,8 +49,6 @@ function serviceDController($scope, $http, $window)
 		$scope.drivers = response.data.racers;
 		$scope.vehicles = response.data.vehicles;
 	}, function (response) {
-		console.log(response.data || 'Failed to retrieve stores for ' +
-			'unspecified reason');
+		console.log(response);
 	});
 }
-

@@ -9,7 +9,7 @@ function serviceBController($scope, $http, $window)
 		var cart = JSON.parse($window.sessionStorage['cart']);
 		cart.products.push(product);
 		$window.sessionStorage['cart'] = JSON.stringify(cart);
-		console.log($window.sessionStorage);
+		//console.log($window.sessionStorage);
 		/*if (confirm('Success. Go to cart?')) {
 			$window.location.href = '#!/cart'
 		}*/
@@ -32,7 +32,7 @@ function serviceBController($scope, $http, $window)
 	$http.get('api/retrievestoreproducts.php').then(function (response) {
 		$scope.stores = response.data.results;
 	}, function (response) {
-		console.log(response.data || 'Failed to retrieve stores for ' +
-			'unspecified reason');
+		alert('Failed to retrieve stores and products');
+		console.log(response);
 	});
 }

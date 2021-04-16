@@ -7,6 +7,7 @@
 		
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="stylesheet" href="css/common.css" />
+		<link rel="stylesheet" href="css/starRating.css" />
 		<link rel="stylesheet" ng-href="{{ css }}" ng-if="css" />
 
 		<!-- Non-minified provides useful debugging information -->
@@ -18,7 +19,6 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-resource.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-leaflet-directive/0.10.0/angular-leaflet-directive.js"></script>
-		
 		<!-- Leaflet files -->
 		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
 			integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
@@ -30,42 +30,33 @@
 		<!-- Leaflet Routing Machine files -->
 		<link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
 		<script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+
 	</head>
 	<body>
 		<div id="outer">
 			<div id="inner" class="floating">
-				<!-- Module containing a common nav bar -->
-				<nav class="nav" ng-controller="NavController">
+				<nav class="nav">
+					<search ng-if="currentUser"></search>
 					<img src="resources/Logo2.png" width="80" height="100"
-						class="d-inline-block align-top" alt="logo"/>
-					<a href="#!/">Home</a>
-					<a href="#!/logout" ng-if="currentUser()">Log Out</a>
-					<a href="#!/login" ng-if="!currentUser()">Log In</a>
-					<a href="#!/signup" ng-if="!currentUser()">Sign Up</a>
-					<a href="#!/aboutus">About Us</a>
-					<a href="#!/contactus">Contact Us</a>
-					<a href="#!/reviews">Reviews</a>
-					<a href="#!/cart" ng-if="currentUser()">Shopping Cart</a>
-					<a href="#!/services">Services</a>
-					<div class="dropdown" ng-if="currentUser().id === 1">
-						<button class="dropbtn">db Maintain</button>
-						<div class="dropdown-content">
-							<a href="insert.php" target="_blank">Insert</a>
-							<a href="delete.php" target="_blank">Delete</a>
-							<a href="update.php" target="_blank">Update</a>
-							<a href="select.php" target="_blank">Select</a>
-						</div>
-					</div>
-					<div style="float: right; padding: 2%;" ng-if="currentUser()">
-						<form method="GET" action="Search.php">
-							<input id="search" name="search" type="number"
-								placeholder="Search" />
-							<input type="submit" />
-						</form>
+							class="d-inline-block align-top" alt="logo"/>
+					<div style="width: 100%; display: inline-block;">
+						<a href="#!/">Home</a>
+						<a href="#!/logout" ng-if="currentUser">Log Out</a>
+						<a href="#!/login" ng-if="!currentUser">Log In</a>
+						<a href="#!/signup" ng-if="!currentUser">Sign Up</a>
+						<a href="#!/aboutus">About Us</a>
+						<a href="#!/contactus">Contact Us</a>
+						<a href="#!/reviews">Reviews</a>
+						<a href="#!/cart" ng-if="currentUser">Shopping Cart</a>
+						<a href="#!/services">Services</a>
+						<a href="#!/database" ng-if="currentUser.id === 1">
+							Database
+						</a>
 					</div>
 				</nav>
-
-				<main id="content" ng-view></main>
+				<main id="content" ng-view=""></main>
+				<footer id="browser-name" ng-controller="BrowserNameController"
+					ng-bind="browserName"></footer>
 			</div>
 		</div>
 		
@@ -78,10 +69,15 @@
 		<!-- load models -->
 		<script src="models/Address.js"></script>
 		<script src="models/Cart.js"></script>
+		<script src="models/Column.js"></script>
 		<script src="models/JoyRide.js"></script>
 		<script src="models/LatLng.js"></script>
 		<script src="models/LeafletCenter.js"></script>
 		<script src="models/Trip.js"></script>
+		
+		<!-- load custom directives -->
+		<script src="directives/search.js"></script>
+		<script src="directives/starRating.js"></script>
 		
 		<!-- load controllers -->
 		<script src="controllers/home.js"></script>
@@ -94,6 +90,8 @@
 		<script src="controllers/services/a.js"></script>
 		<script src="controllers/services/b.js"></script>
 		<script src="controllers/services/d.js"></script>
+		<script src="controllers/database.js"></script>
+		<script src="controllers/search.js"></script>
 		
 		<script>
 			var app = angular.module('App', [ 'ngRoute', 'ngResource',
@@ -159,21 +157,76 @@
 					css: 'css/services/d.css',
 					templateUrl: 'templates/services/d.html',
 					controller: 'ServiceDController'
+				}).when('/database', {
+					title: 'Database Maintenance - GQZ Travels',
+					css: 'css/database.css',
+					templateUrl: 'templates/database.html',
+					controller: 'DatabaseController'
+				}).when('/search', {
+					title: 'Search - GQZ Travels',
+					css: 'css/search.css',
+					templateUrl: 'templates/search.html',
+					controller: 'SearchController'
 				}).otherwise({ redirectTo: '/' });
 			});
-			app.controller('NavController', [ '$scope', '$window',
+			/*app.factory('searchParameters', function () {
+				var query = '';
+				return {
+					getQuery: function () { return query; },
+					setQuery: function (q) { query = q; }
+				};
+			});*/
+			app.factory('searchParameters', function ($rootScope) {
+				return {
+					query: '',
+					subscribe: function (scope, callback) {
+						var handler = $rootScope.$on('search-change-event',
+							callback);
+						scope.$on('$destroy', handler);
+					},
+					notify: function () {
+						$rootScope.$emit('search-change-event');
+					}
+				};
+			});
+			
+			/*app.controller('NavController', [ '$scope', '$window',
 				function ($scope, $window) {
 				$scope.currentUser = function () {
 					return $window.sessionStorage['user'];
 				};
-			} ]);
+			} ]);*/
+			/*app.controller('SearchController', [ '$scope', '$window',
+				function ($scope, $window) {
+				console.warn('reloaded');
+				$scope.query = '';
+				$scope.goToSearch = function () {
+					if ($scope.query) {
+						$window.location.href = '#!/search';
+					}
+				}
+			}]);*/
+			app.controller('BrowserNameController', function ($scope) {
+				const userAgent = navigator.userAgent;
+				if (userAgent.indexOf("Opera") > -1) {
+					$scope.browserName = "Opera Browser"
+				} else if (userAgent.indexOf("Firefox") > -1) {
+					$scope.browserName = "Firefox Browser";
+				} else if (userAgent.indexOf("Chrome") > -1) {
+					$scope.browserName = "Chrome Browser";
+				} else if (userAgent.indexOf("Safari") > -1) {
+					$scope.browserName = "Safari Browser";
+				} else {
+					$scope.browserName = "Unknown Browser"
+				}
+			});
 			app.controller('HomeController', [ '$scope', '$interval',
 				homeController ]);
 			app.controller('SignUpController', [ '$scope', '$http', '$window',
 				signupController ]);
-			app.controller('LogInController', [ '$scope', '$http', '$window',
-				'$location', loginController ]);
-			app.controller('LogOutController', [ '$scope', '$window',
+			app.controller('LogInController', [ '$scope', '$rootScope', '$http',
+				'$window', '$location', loginController ]);
+			app.controller('LogOutController', [ '$scope', '$rootScope', '$window',
 				logoutController ]);
 			app.controller('ReviewsController', [ '$scope', '$http',
 				reviewsController ]);
@@ -187,15 +240,26 @@
 				serviceBController ]);
 			app.controller('ServiceDController', [ '$scope', '$http', '$window',
 				serviceDController ]);
+			app.controller('DatabaseController', [ '$scope', '$http',
+				databaseController ]);
+			app.controller('SearchController', [ '$scope', '$http',
+				'searchParameters', searchController ]);
 			
-			app.run([ '$rootScope', function ($rootScope) {
+			app.directive('search', searchDirective);
+			app.directive('starRating', starRatingDirective);
+			
+			app.run([ '$rootScope', '$window', function ($rootScope, $window) {
+				if (!$rootScope.currentUser && $window.sessionStorage['user']) {
+					$rootScope.currentUser = JSON.parse($window.sessionStorage['user']);
+				}
 				$rootScope.$on('$routeChangeSuccess',
 					function (event, current, previous) {
 					$rootScope.title = current.$$route.title;
 					$rootScope.css = current.$$route.css;
 				});
 			} ]);
-    </script>
+		</script>
+
 	</body>
 </html>
 

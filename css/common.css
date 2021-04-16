@@ -63,15 +63,15 @@ a:visited {
 
 /* mostly used for the navbar */
 .dropbtn {
-    //background-color: #4CAF50;
-    //color: white;
+    /*background-color: #4CAF50;*/
+    /*color: white;*/
     padding: 16px;
     font-size: 16px;
     border: none;
     cursor: pointer;
 }
 
-.dropdown {
+/*.dropdown {
     position: relative;
     display: inline-block;
 }
@@ -101,4 +101,4 @@ a:visited {
 
 .dropdown:hover .dropbtn {
     //background-color: #3e8e41;
-}
+}*/

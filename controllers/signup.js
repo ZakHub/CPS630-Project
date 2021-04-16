@@ -31,7 +31,11 @@ function signupController($scope, $http, $window)
 			console.log('This should redirect');
 		}, function (response) {
 			alert('Failed to register user. Check log for further details.');
-			console.log(response.data || 'Request failed with unspecified reason');
+			console.log(response);
 		});
+	};
+	
+	$scope.goBack = function () {
+		$window.history.back();
 	};
 }
