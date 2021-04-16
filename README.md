@@ -6,14 +6,21 @@ Requires the use of apache2, MySQL or MariaDB, and PHP (7 preferred, might work 
 ## Languages
  - HTML
  - CSS
- - JavaScript
+ - JavaScript (+AngularJS)
  - PHP
  - SQL
 
-## Key
-PascalCase filenames are generally user facing pages
+## Directory structure
+ - /api: The various API's used to retrieve data by the controllers
+ - /controllers: Controllers for each dynamic pages
+ - /css: Style information for each dynamic page
+ - /directives: Source files for custom directives
+ - /models: Class files used for passing data around application
+ - /resources: Additional files required by the application
+ - /templates: The HTML template files for each page
+ - /index.html: The layout page for the single-page application
+ - /initdb.sql: SQL script to initialize the tables of a database
+ - /test.sql: SQL script to load dummy values into database
 
-CamelCase filenames are classes
-
-Files in the api folder are interfaces for user facing pages to request or modify data
-
+## Configuration
+ - /api/connect.php: May need to adjust database server settings

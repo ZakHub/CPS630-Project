@@ -14,7 +14,7 @@
 	<tr ng-repeat="order in data">
 		<td ng-bind="order.id"></td>
 		<td ng-bind="order.orderDate"></td>
-		<td>${{ order.price }}</td>
+		<td ng-bind-template="${{ order.price.toFixed(2) }}"></td>
 		<td ng-bind="order.userId"></td>
 		<td ng-bind="order.itemCount"></td>
 	</tr>
